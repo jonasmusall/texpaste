@@ -23,7 +23,8 @@ body {
 #input-container {
     flex-grow: 0;
     flex-shrink: 0;
-    padding: 8px;
+    padding: 16px;
+    padding-top: 0px;
 }
 
 #tex-output {
