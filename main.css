@@ -3,10 +3,10 @@ html {
 }
 
 body {
+    height: 100%;
+    margin: 0px;
     background-color: #222222;
     color: #ffffff;
-    margin: 0px;
-    height: 100%;
 }
 
 #main-container {
@@ -27,21 +27,20 @@ body {
 }
 
 #tex-output {
-    display: block;
     flex-grow: 0;
     font-size: 18px;
     user-select: none;
 }
 
 #tex-input {
-    background-color: #353535;
-    border: 1px solid #5e5e5e;
-    border-radius: 4px;
-    color: #f1f1f1;
-    font-family: monospace;
     box-sizing: border-box;
     width: 100%;
     padding: 8px;
+    background-color: #353535;
+    color: #f1f1f1;
+    font-family: monospace;
+    border: 1px solid #5e5e5e;
+    border-radius: 4px;
 }
 
 .flex-container {
