@@ -13,11 +13,19 @@ function renderTeX() {
     )
 }
 
+function accept() {
+    window.close();
+}
+
+function cancel() {
+    window.close();
+}
+
 function handleKeyUp(event) {
     if (event.key == "Enter") {
-        window.close();
+        accept();
     } else if (event.key == "Escape") {
-        window.close();
+        cancel();
     }
 }
 
@@ -26,5 +34,7 @@ window.addEventListener("DOMContentLoaded", () => {
     output = document.getElementById("tex-output");
     input.addEventListener("input", renderTeX);
     input.addEventListener("keyup", handleKeyUp);
+    document.getElementById("accept").addEventListener("click", accept);
+    document.getElementById("cancel").addEventListener("click", cancel);
     input.focus();
 });

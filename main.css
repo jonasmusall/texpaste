@@ -48,7 +48,54 @@ body {
     outline: none;
 }
 
+#button-container {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    flex-direction: row;
+    padding: 16px;
+}
+
+#accept {
+    background-color: #00b44b;
+    border-color: #0d8840;
+}
+
+#cancel {
+    background-color: #c7442c;
+    border-color: #943726;
+}
+
 .flex-container {
     display: flex;
     flex-direction: column;
+}
+
+.button {
+    box-sizing: border-box;
+    width: 16px;
+    height: 16px;
+    margin-left: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid;
+    border-radius: 10px;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.button > img {
+    width: 12px;
+    height: 12px;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+body:hover .button {
+    opacity: 1;
+}
+
+.button:hover > img {
+    opacity: 0.7;
 }
