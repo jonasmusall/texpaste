@@ -5,7 +5,8 @@ function createWindow() {
         width: 700,
         height: 200,
         frame: false,
-        resizable: false
+        resizable: false,
+        alwaysOnTop: true
     });
     win.loadFile("index.html");
 }

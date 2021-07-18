@@ -14,7 +14,10 @@ function renderTeX() {
 }
 
 function accept() {
-    window.close();
+    navigator.clipboard.writeText(input.value).then(
+        () => window.close(),
+        () => window.close()
+    )
 }
 
 function cancel() {
@@ -36,5 +39,6 @@ window.addEventListener("DOMContentLoaded", () => {
     input.addEventListener("keyup", handleKeyUp);
     document.getElementById("accept").addEventListener("click", accept);
     document.getElementById("cancel").addEventListener("click", cancel);
+    document.body.addEventListener("click", () => input.focus());
     input.focus();
 });
