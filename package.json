@@ -9,6 +9,7 @@
   "author": "Jonas Musall",
   "license": "GPL-3.0",
   "devDependencies": {
-    "electron": "^13.1.7"
+    "electron": "^13.1.7",
+    "katex": "^0.13.11"
   }
 }
