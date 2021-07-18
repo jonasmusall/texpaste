@@ -9,6 +9,7 @@ body {
     height: 100px;
     margin-top: 32px;
     user-select: none;
+    overflow: hidden;
 }
 
 #tex-input {
