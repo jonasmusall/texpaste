@@ -4,9 +4,14 @@
         <meta charset="UTF-8">
         <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
         <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+        <link rel="stylesheet" href="node_modules/katex/dist/katex.css">
+        <link rel="stylesheet" href="main.css">
+        <script defer src="node_modules/katex/dist/katex.js"></script>
+        <script src="renderer.js"></script>
         <title>TeXPaste</title>
     </head>
     <body>
-        Hello world!
+        <div id="tex-output"></div>
+        <input id="tex-input" type="text">
     </body>
 </html>

@@ -1,10 +1,9 @@
 const { app, BrowserWindow } = require("electron");
-const katex = require("katex");
 
 function createWindow() {
     const win = new BrowserWindow({
-        width: 800,
-        height: 300,
+        width: 700,
+        height: 200,
         frame: false,
         resizable: false
     });

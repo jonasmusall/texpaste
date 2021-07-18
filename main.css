@@ -1,0 +1,23 @@
+body {
+    background-color: #222222;
+    color: #ffffff;
+    padding: 8px;
+}
+
+#tex-output {
+    font-size: 18px;
+    height: 100px;
+    margin-top: 32px;
+    user-select: none;
+}
+
+#tex-input {
+    background-color: #353535;
+    border: 1px solid #5e5e5e;
+    border-radius: 4px;
+    box-sizing: border-box;
+    color: #f1f1f1;
+    font-family: monospace;
+    padding: 8px;
+    width: 100%;
+}
