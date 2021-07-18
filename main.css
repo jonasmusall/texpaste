@@ -1,24 +1,50 @@
+html {
+    height: 100%;
+}
+
 body {
     background-color: #222222;
     color: #ffffff;
+    margin: 0px;
+    height: 100%;
+}
+
+#main-container {
+    height: 100%;
+}
+
+#output-container {
+    flex-grow: 1;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+#input-container {
+    flex-grow: 0;
+    flex-shrink: 0;
     padding: 8px;
 }
 
 #tex-output {
+    display: block;
+    flex-grow: 0;
     font-size: 18px;
-    height: 100px;
-    margin-top: 32px;
     user-select: none;
-    overflow: hidden;
 }
 
 #tex-input {
     background-color: #353535;
     border: 1px solid #5e5e5e;
     border-radius: 4px;
-    box-sizing: border-box;
     color: #f1f1f1;
     font-family: monospace;
-    padding: 8px;
+    box-sizing: border-box;
     width: 100%;
+    padding: 8px;
+}
+
+.flex-container {
+    display: flex;
+    flex-direction: column;
 }
