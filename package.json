@@ -1,0 +1,14 @@
+{
+  "name": "texpaste",
+  "version": "1.0.0",
+  "description": "Live TeX rendering.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "Jonas Musall",
+  "license": "GPL-3.0",
+  "devDependencies": {
+    "electron": "^13.1.7"
+  }
+}
