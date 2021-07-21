@@ -1,6 +1,5 @@
-const { app, BrowserWindow, ipcMain } = require("electron");
+const { app, BrowserWindow, ipcMain, clipboard } = require("electron");
 const path = require("path");
-const fs = require("fs");
 
 let winIn, winOut;
 let imgOut;
@@ -14,7 +13,7 @@ ipcMain.on("tex", (event, args) => {
 });
 
 ipcMain.on("accept", (event, args) => {
-    fs.writeFileSync("output.png", imgOut.toPNG());
+    clipboard.writeImage(imgOut);
     winIn.close();
 });
 
