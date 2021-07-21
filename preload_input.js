@@ -25,10 +25,7 @@ function updateTex() {
 }
 
 function accept() {
-    navigator.clipboard.writeText(input.value).then(
-        () => window.close(),
-        () => window.close()
-    )
+    ipcRenderer.send("accept");
 }
 
 function cancel() {

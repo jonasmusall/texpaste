@@ -3,6 +3,7 @@ const path = require("path");
 const fs = require("fs");
 
 let winIn, winOut;
+let imgOut;
 
 ipcMain.on("size", (event, args) => {
     winOut.setSize(args.width + 60, args.height);
@@ -10,6 +11,11 @@ ipcMain.on("size", (event, args) => {
 
 ipcMain.on("tex", (event, args) => {
     winOut.webContents.send("tex", args);
+});
+
+ipcMain.on("accept", (event, args) => {
+    fs.writeFileSync("output.png", imgOut.toPNG());
+    winIn.close();
 });
 
 function createInputWindow() {
@@ -43,7 +49,7 @@ function createOutputWindow() {
     });
     winOut.loadFile("output.html");
     winOut.webContents.on("paint", (event, dirty, image) => {
-        fs.writeFileSync("output.png", image.toPNG());
+        imgOut = image;
     });
 }
 
