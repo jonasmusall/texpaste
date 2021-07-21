@@ -1,0 +1,17 @@
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+    margin: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #00000000;
+    color: #ffffff;
+}
+
+#tex-output {
+    font-size: 18px;
+}
