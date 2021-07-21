@@ -4,11 +4,13 @@ function createWindow() {
     const win = new BrowserWindow({
         width: 700,
         height: 200,
-        frame: false,
         resizable: false,
-        alwaysOnTop: true
+        alwaysOnTop: true,
+        show: false,
+        frame: false
     });
     win.loadFile("index.html");
+    win.once("ready-to-show", () => win.show());
 }
 
 app.whenReady().then(() => {
