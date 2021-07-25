@@ -2,12 +2,16 @@
   "name": "texpaste",
   "version": "1.0.0",
   "description": "Live TeX rendering.",
+  "author": "Jonas Musall",
+  "license": "GPL-3.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jonasmusall/texpaste.git"
+  },
   "main": "main.js",
   "scripts": {
     "start": "electron ."
   },
-  "author": "Jonas Musall",
-  "license": "GPL-3.0",
   "devDependencies": {
     "electron": "^13.1.7",
     "katex": "^0.13.11"
