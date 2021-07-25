@@ -3,7 +3,7 @@ Input TeX code to get a live preview. Press ENTER or click the green checkmark t
 
 Made with [Electron](https://www.electronjs.org/) and [KaTeX](https://katex.org/).
 
-<img src="./demo.png">
+<img src="./docs/images/demo.png">
 
 ## How to run
 To run this app, you will need [Node.js](https://nodejs.org/). Standalone packages are being worked on.

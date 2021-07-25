@@ -26,10 +26,10 @@ function createInputWindow() {
         show: false,
         frame: false,
         webPreferences: {
-            preload: path.join(__dirname, "preload_input.js")
+            preload: path.join(__dirname, "app/preload/input.js")
         }
     });
-    winIn.loadFile("input.html");
+    winIn.loadFile("app/input.html");
     winIn.once("ready-to-show", () => winIn.show());
     winIn.on("close", () => winOut.close());
 }
@@ -43,10 +43,10 @@ function createOutputWindow() {
         show: false,
         webPreferences: {
             offscreen: true,
-            preload: path.join(__dirname, "preload_output.js")
+            preload: path.join(__dirname, "app/preload/output.js")
         }
     });
-    winOut.loadFile("output.html");
+    winOut.loadFile("app/output.html");
     winOut.webContents.on("paint", (event, dirty, image) => {
         imgOut = image;
     });
