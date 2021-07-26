@@ -13,7 +13,8 @@
     "postinstall": "electron-builder install-app-deps",
     "start": "electron .",
     "pack": "electron-builder --dir",
-    "dist": "electron-builder"
+    "dist": "electron-builder",
+    "publish": "electron-builder -p always"
   },
   "devDependencies": {
     "electron": "^13.1.7",
