@@ -5,12 +5,15 @@ Made with [Electron](https://www.electronjs.org/) and [KaTeX](https://katex.org/
 
 <img src="./docs/images/demo.png">
 
-## How to run
-To run this app, you will need [Node.js](https://nodejs.org/). Standalone packages are being worked on.
+## Development
+To build or run this app directly from the source code, you will need [Node.js](https://nodejs.org/). Clone or download the repository and use the following commands.
 
-`npm install` once after pulling to install the required dependencies.
-
-`npm start` to launch the application.
+| Command        | Description                                                        |
+| -------------- | ------------------------------------------------------------------ |
+| `npm install`  | Installs the required dependencies.                                |
+| `npm start`    | Launches the application.                                          |
+| `npm run pack` | Packages the application (output is located in the "dist" folder). |
+| `npm run dist` | Packages while also creating an installer.                         |
 
 ## Upcoming features
 Settings such as colors and custom TeX macros.
