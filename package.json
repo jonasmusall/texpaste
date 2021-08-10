@@ -17,11 +17,11 @@
     "publish": "electron-builder -p always"
   },
   "devDependencies": {
-    "electron": "^13.1.7",
-    "electron-builder": "^22.11.7"
+    "electron": "^13.1.9",
+    "electron-builder": "^22.12.0"
   },
   "dependencies": {
-    "katex": "^0.13.11"
+    "katex": "^0.13.13"
   },
   "build": {
     "appId": "jonasmusall.texpaste",
