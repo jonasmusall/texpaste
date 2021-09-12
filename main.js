@@ -1,4 +1,5 @@
 const { app, BrowserWindow, ipcMain, clipboard } = require("electron");
+const { autoUpdater } = require("electron-updater");
 const path = require("path");
 
 let winIn, winOut;
@@ -55,4 +56,5 @@ function createOutputWindow() {
 app.whenReady().then(() => {
     createOutputWindow();
     createInputWindow();
+    autoUpdater.checkForUpdatesAndNotify();
 });
