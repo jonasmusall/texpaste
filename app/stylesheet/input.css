@@ -99,3 +99,20 @@ body:hover .button {
 .button:hover > img {
     opacity: 0.7;
 }
+
+.button.icon {
+    border: none;
+    border-radius: 0px;
+}
+
+.button.icon > img {
+    width: 16px;
+    height: 16px;
+    opacity: 1;
+    transition: filter 0.2s;
+}
+
+.button.icon:hover > img {
+    opacity: 1;
+    filter: brightness(150%);
+}

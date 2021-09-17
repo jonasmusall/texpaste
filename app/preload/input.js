@@ -24,6 +24,10 @@ function updateTex() {
     )
 }
 
+function openSettings() {
+    ipcRenderer.send("open-settings");
+}
+
 function accept() {
     ipcRenderer.send("accept");
 }
@@ -45,6 +49,7 @@ window.addEventListener("DOMContentLoaded", () => {
     output = document.getElementById("tex-output");
     input.addEventListener("input", updateTex);
     input.addEventListener("keyup", handleKeyUp);
+    document.getElementById("settings").addEventListener("click", openSettings);
     document.getElementById("accept").addEventListener("click", accept);
     document.getElementById("cancel").addEventListener("click", cancel);
     new ResizeObserver(sizeChanged).observe(output);

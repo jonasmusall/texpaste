@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+        <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+        <link rel="stylesheet" href="stylesheet/settings.css">
+        <title>Settings</title>
+    </head>
+    <body>
+        <form>
+            <div class="setting">
+                <input type="checkbox" id="update-check"><label for="update-check">
+                    <img src="../assets/icons/check_white.svg">
+                </label><label for="update-check">Check for updates</label>
+            </div>
+            <div class="setting">
+                <input type="checkbox" id="update-autoinstall"><label for="update-autoinstall">
+                    <img src="../assets/icons/check_white.svg">
+                </label><label for="update-autoinstall">Install updates automatically</label>
+            </div>
+            <div id="actions">
+                <input id="save" type="button" value="Save" autofocus><input id="cancel" type="button" value="Cancel">
+            </div>
+        </form>
+    </body>
+</html>

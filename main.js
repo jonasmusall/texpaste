@@ -4,6 +4,7 @@ const path = require("path");
 
 let winIn, winOut;
 let imgOut;
+let isSettingsWindowOpen = false;
 
 ipcMain.on("size", (event, args) => {
     winOut.setSize(args.width + 60, args.height);
@@ -11,6 +12,13 @@ ipcMain.on("size", (event, args) => {
 
 ipcMain.on("tex", (event, args) => {
     winOut.webContents.send("tex", args);
+});
+
+ipcMain.on("open-settings", (event, args) => {
+    if (!isSettingsWindowOpen) {
+        isSettingsWindowOpen = true;
+        createSettingsWindow();
+    }
 });
 
 ipcMain.on("accept", (event, args) => {
@@ -51,6 +59,26 @@ function createOutputWindow() {
     winOut.webContents.on("paint", (event, dirty, image) => {
         imgOut = image;
     });
+}
+
+function createSettingsWindow() {
+    const winSettings = new BrowserWindow({
+        width: 300,
+        height: 400,
+        resizable: false,
+        minimizable: false,
+        maximizable: false,
+        show: false,
+        parent: winIn,
+        modal: true,
+        webPreferences: {
+            preload: path.join(__dirname, "app/preload/settings.js")
+        }
+    });
+    winSettings.menuBarVisible = false;
+    winSettings.loadFile("app/settings.html");
+    winSettings.once("ready-to-show", () => winSettings.show());
+    winSettings.on("close", () => isSettingsWindowOpen = false);
 }
 
 app.whenReady().then(() => {
