@@ -23,7 +23,6 @@ function createInputWindow() {
         width: 700,
         height: 200,
         resizable: false,
-        alwaysOnTop: true,
         show: false,
         frame: false,
         webPreferences: {
