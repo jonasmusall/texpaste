@@ -1,10 +1,12 @@
 const { app, BrowserWindow, ipcMain, clipboard } = require("electron");
+const Store = require("electron-store");
 const { autoUpdater } = require("electron-updater");
 const path = require("path");
 
 let winIn, winOut;
 let imgOut;
 let isSettingsWindowOpen = false;
+let store;
 
 ipcMain.on("size", (event, args) => {
     winOut.setSize(args.width + 60, args.height);
@@ -19,6 +21,14 @@ ipcMain.on("open-settings", (event, args) => {
         isSettingsWindowOpen = true;
         createSettingsWindow();
     }
+});
+
+ipcMain.handle("read-settings", async (event, args) => {
+    return store.store;
+});
+
+ipcMain.on("write-settings", (event, args) => {
+    store.store = args;
 });
 
 ipcMain.on("accept", (event, args) => {
@@ -84,5 +94,17 @@ function createSettingsWindow() {
 app.whenReady().then(() => {
     createOutputWindow();
     createInputWindow();
+    store = new Store({
+        schema: {
+            updateCheck: {
+                type: "boolean",
+                default: true
+            },
+            updateAutoinstall: {
+                type: "boolean",
+                default: true
+            }
+        }
+    });
     autoUpdater.checkForUpdatesAndNotify();
 });
