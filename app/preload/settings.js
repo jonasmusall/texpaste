@@ -33,12 +33,18 @@ function readFromInterface() {
 function writeToInterface() {
     inputUpdateCheck.checked = settings.updateCheck;
     inputUpdateAutoinstall.checked = settings.updateAutoinstall;
+    setEnabled(inputUpdateAutoinstall, settings.updateCheck);
+}
+
+function setEnabled(element, enabled) {
+    element.disabled = !enabled;
 }
 
 window.addEventListener("DOMContentLoaded", () => {
     inputUpdateCheck = document.getElementById("update-check");
     inputUpdateAutoinstall = document.getElementById("update-autoinstall");
     writeToInterface();
+    inputUpdateCheck.addEventListener("change", (event) => { setEnabled(inputUpdateAutoinstall, inputUpdateCheck.checked) });
     document.getElementById("save").addEventListener("click", save);
     document.getElementById("cancel").addEventListener("click", close);
 });

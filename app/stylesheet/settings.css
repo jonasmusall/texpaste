@@ -56,6 +56,24 @@ input[type="checkbox"]:focus + label {
     box-shadow: 0px 0px 0px 3px #cce2ff;
 }
 
+input[type="checkbox"]:disabled + label {
+    background-color: #ffffff;
+    border-color: #e6e6e6;
+}
+
+input[type="checkbox"]:disabled + label + label {
+    color: #5e5e5e;
+}
+
+input[type="checkbox"]:disabled:checked + label {
+    background-color: #c9c9c9;
+    border-color: #c9c9c9;
+}
+
+input[type="checkbox"]:disabled:hover + label {
+    box-shadow: none;
+}
+
 input[type="button"] {
     min-width: 80px;
     padding: 4px 8px;
