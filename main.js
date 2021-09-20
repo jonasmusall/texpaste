@@ -29,7 +29,13 @@ ipcMain.handle("read-settings", async (event, args) => {
 });
 
 ipcMain.on("write-settings", (event, args) => {
-    store.store = args;
+    //if updateCheck was reenabled, clear updateSkipVersion
+    if (args.updateCheck && !store.get("updateCheck")) {
+        store.store = args;
+        store.reset("updateSkipVersion");
+    } else {
+        store.store = args;
+    }
     setupAutoUpdater();
     checkForUpdates();
 });
@@ -107,16 +113,23 @@ function createSettingsWindow() {
 }
 
 function setupAutoUpdater() {
-    autoUpdater.autoDownload = autoUpdater.autoInstallOnAppQuit = store.get("updateAutoinstall");
+    autoUpdater.autoDownload = false;
+    autoUpdater.autoInstallOnAppQuit = store.get("updateAutoinstall");
+    autoUpdater.removeAllListeners("update-available");
+    autoUpdater.addListener("update-available", (info) => {
+        if (semver.gt(info.version, store.get("updateSkipVersion"))) {
+            if (store.get("updateAutoinstall")) {
+                autoUpdater.downloadUpdate();
+            } else {
+                winIn.webContents.send("update-notify", { nextVersion: info.version });
+            }
+        }
+    })
 }
 
 function checkForUpdates() {
     if (store.get("updateCheck")) {
-        autoUpdater.checkForUpdates().then((result) => {
-            if (semver.gt(result.updateInfo.version, store.get("updateSkipVersion")) && !store.get("updateAutoinstall")) {
-                winIn.webContents.send("update-notify", { nextVersion: result.updateInfo.version });
-            }
-        });
+        autoUpdater.checkForUpdates();
     }
 }
 
