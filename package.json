@@ -23,7 +23,8 @@
   "dependencies": {
     "electron-store": "^8.0.1",
     "electron-updater": "^4.3.9",
-    "katex": "^0.13.13"
+    "katex": "^0.13.13",
+    "semver": "^7.3.5"
   },
   "build": {
     "appId": "jonasmusall.texpaste",

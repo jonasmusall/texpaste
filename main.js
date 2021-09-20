@@ -1,6 +1,7 @@
 const { app, BrowserWindow, ipcMain, clipboard } = require("electron");
 const Store = require("electron-store");
 const { autoUpdater } = require("electron-updater");
+const semver = require("semver");
 const path = require("path");
 
 let winIn, winOut;
@@ -29,6 +30,21 @@ ipcMain.handle("read-settings", async (event, args) => {
 
 ipcMain.on("write-settings", (event, args) => {
     store.store = args;
+    setupAutoUpdater();
+    checkForUpdates();
+});
+
+ipcMain.on("update-check", (event, args) => {
+    checkForUpdates();
+})
+
+ipcMain.on("update-install", (event, args) => {
+    autoUpdater.downloadUpdate();
+    autoUpdater.autoInstallOnAppQuit = true;
+});
+
+ipcMain.on("update-skip", (event, args) => {
+    store.set("updateSkipVersion", args.nextVersion);
 });
 
 ipcMain.on("accept", (event, args) => {
@@ -90,9 +106,21 @@ function createSettingsWindow() {
     winSettings.on("close", () => isSettingsWindowOpen = false);
 }
 
+function setupAutoUpdater() {
+    autoUpdater.autoDownload = autoUpdater.autoInstallOnAppQuit = store.get("updateAutoinstall");
+}
+
+function checkForUpdates() {
+    if (store.get("updateCheck")) {
+        autoUpdater.checkForUpdates().then((result) => {
+            if (semver.gt(result.updateInfo.version, store.get("updateSkipVersion")) && !store.get("updateAutoinstall")) {
+                winIn.webContents.send("update-notify", { nextVersion: result.updateInfo.version });
+            }
+        });
+    }
+}
+
 app.whenReady().then(() => {
-    createOutputWindow();
-    createInputWindow();
     store = new Store({
         schema: {
             updateCheck: {
@@ -102,8 +130,14 @@ app.whenReady().then(() => {
             updateAutoinstall: {
                 type: "boolean",
                 default: true
+            },
+            updateSkipVersion: {
+                type: "string",
+                default: "0.0.0"
             }
         }
     });
-    autoUpdater.checkForUpdatesAndNotify();
+    setupAutoUpdater();
+    createOutputWindow();
+    createInputWindow();
 });

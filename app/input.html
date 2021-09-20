@@ -14,13 +14,21 @@
                 <div id="tex-output"></div>
             </div>
             <div id="input-container">
-                <input id="tex-input" type="text" spellcheck="false">
+                <input id="tex-input" type="text" spellcheck="false" tabindex="2">
             </div>
         </div>
         <div id="button-container" class="flex-container">
             <div id="settings" class="button icon"><img src="../assets/icons/settings.svg"></div>
             <div id="accept" class="button"><img src="../assets/icons/check.svg"></div>
             <div id="cancel" class="button"><img src="../assets/icons/close.svg"></div>
+        </div>
+        <div id="banner-container" class="flex-container row">
+            <div id="banner" class="flex-container">
+                <p id="banner-text"></p>
+                <form id="banner-actions">
+                    <input id="banner-yes" type="button" value="Yes" tabindex="-1"><input id="banner-skip" type="button" value="Skip this version" tabindex="-1">
+                </form>
+            </div>
         </div>
     </body>
 </html>
