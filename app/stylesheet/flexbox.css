@@ -1,0 +1,16 @@
+.flex {
+    display: flex;
+    flex-direction: column;
+}
+
+.flex.row {
+    flex-direction: row;
+}
+
+.flex.justify-end {
+    justify-content: flex-end;
+}
+
+.flex > .align-end {
+    margin-top: auto;
+}

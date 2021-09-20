@@ -12,12 +12,6 @@ body {
     cursor: default;
 }
 
-form {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-}
-
 input[type="checkbox"] {
     display: inline-block;
     width: 0px;
@@ -74,41 +68,7 @@ input[type="checkbox"]:disabled:hover + label {
     box-shadow: none;
 }
 
-input[type="button"] {
-    min-width: 80px;
-    padding: 4px 8px;
-    background-color: #ffffff;
-    border: 1px solid #c9c9c9;
-    border-radius: 4px;
-    font-size: 12px;
-    transition-property: background-color, border-color;
-    transition-duration: 0.2s;
-}
-
-input[type="button"]:focus {
-    border-color: #2a74d4;
-    outline: none;
-}
-
-input[type="button"]:hover {
-    background-color: #f5f5f5;
-}
-
-input[type="button"]:active {
-    background-color: #cce2ff;
-    border-color: #2a74d4;
-}
-
 .setting {
     margin-bottom: 8px;
     user-select: none;
-}
-
-#actions {
-    margin-top: auto;
-    text-align: right;
-}
-
-#actions > input {
-    margin-left: 8px;
 }

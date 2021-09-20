@@ -1,0 +1,48 @@
+button {
+    min-width: 80px;
+    padding: 4px 16px;
+    background-color: #ffffff;
+    color: #000000;
+    border: 1px solid #c9c9c9;
+    border-radius: 4px;
+    font-size: 12px;
+    transition-property: background-color, border-color;
+    transition-duration: 0.2s;
+}
+
+button + button {
+    margin-left: 8px;
+}
+
+button:focus {
+    border-color: #2a74d4;
+    outline: none;
+}
+
+button:hover {
+    background-color: #f5f5f5;
+}
+
+button:active {
+    background-color: #cce2ff;
+    border-color: #2a74d4;
+}
+
+button.outlined {
+    background-color: #ffffff00;
+    color: #ffffff;
+    border: 1px solid #ffffff4d;
+}
+
+button.outlined:focus {
+    border-color: #ffffff;
+}
+
+button.outlined:hover {
+    background-color: #ffffff11;
+}
+
+button.outlined:active {
+    background-color: #0000001c;
+    border-color: #ffffff;
+}

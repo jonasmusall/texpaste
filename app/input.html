@@ -6,28 +6,30 @@
         <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
         <link rel="stylesheet" href="../node_modules/katex/dist/katex.css">
         <link rel="stylesheet" href="stylesheet/input.css">
+        <link rel="stylesheet" href="stylesheet/flexbox.css">
+        <link rel="stylesheet" href="stylesheet/buttons.css">
         <title>TeXPaste</title>
     </head>
     <body>
-        <div id="main-container" class="flex-container">
-            <div id="output-container" class="flex-container">
+        <div id="main-container" class="flex">
+            <div id="output-container" class="flex">
                 <div id="tex-output"></div>
             </div>
             <div id="input-container">
                 <input id="tex-input" type="text" spellcheck="false" tabindex="2">
             </div>
         </div>
-        <div id="button-container" class="flex-container">
-            <div id="settings" class="button icon"><img src="../assets/icons/settings.svg"></div>
-            <div id="accept" class="button"><img src="../assets/icons/check.svg"></div>
-            <div id="cancel" class="button"><img src="../assets/icons/close.svg"></div>
+        <div id="window-controls" class="flex row">
+            <button id="settings" class="icon" tabindex="3"><img src="../assets/icons/settings.svg"></button>
+            <button id="accept" tabindex="4"><img src="../assets/icons/check.svg"></button>
+            <button id="cancel" tabindex="5"><img src="../assets/icons/close.svg"></button>
         </div>
-        <div id="banner-container" class="flex-container row">
-            <div id="banner" class="flex-container">
+        <div id="banner-container" class="flex row">
+            <div id="banner" class="flex">
                 <p id="banner-text"></p>
-                <form id="banner-actions">
-                    <input id="banner-yes" type="button" value="Yes" tabindex="-1"><input id="banner-skip" type="button" value="Skip this version" tabindex="-1">
-                </form>
+                <div class="flex row justify-end">
+                    <button id="banner-yes" class="outlined" tabindex="-1">Yes</button><button id="banner-skip" class="outlined" tabindex="-1">Skip this version</button>
+                </div>
             </div>
         </div>
     </body>

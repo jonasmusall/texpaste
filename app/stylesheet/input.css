@@ -39,21 +39,86 @@ body {
     padding: 8px;
     background-color: #353535;
     color: #f1f1f1;
-    font-family: monospace;
     border: 1px solid #5e5e5e;
     border-radius: 4px;
+    font-family: monospace;
 }
 
 #tex-input:focus {
     outline: none;
 }
 
-#button-container {
-    position: absolute;
+#window-controls {
+    position: fixed;
     top: 0px;
     right: 0px;
-    flex-direction: row;
     padding: 16px;
+}
+
+#window-controls > button {
+    display: flex;
+    box-sizing: border-box;
+    min-width: 0px;
+    width: 16px;
+    height: 16px;
+    padding: 0px;
+    justify-content: center;
+    align-items: center;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 10px;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+body:hover #window-controls > button {
+    opacity: 1;
+}
+
+#window-controls:focus-within > button {
+    opacity: 1;
+}
+
+#window-controls > button + button {
+    margin-left: 12px;
+}
+
+#window-controls > button > img {
+    width: 12px;
+    height: 12px;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+#window-controls > button:focus > img {
+    opacity: 0.7;
+}
+
+#window-controls > button:hover > img {
+    opacity: 0.7;
+}
+
+#window-controls > button.icon {
+    background: none;
+    border: none;
+    border-radius: 0px;
+}
+
+#window-controls > button.icon > img {
+    width: 16px;
+    height: 16px;
+    opacity: 1;
+    transition: filter 0.2s;
+}
+
+#window-controls > button.icon:focus > img {
+    opacity: 1;
+    filter: brightness(150%);
+}
+
+#window-controls > button.icon:hover > img {
+    opacity: 1;
+    filter: brightness(150%);
 }
 
 #accept {
@@ -67,26 +132,26 @@ body {
 }
 
 #banner-container {
-    top: 0px;
     position: fixed;
-    justify-content: center;
+    top: 0px;
     width: 100%;
     height: 0px;
+    justify-content: center;
 }
 
 #banner {
     position: absolute;
+    bottom: 0px;
     min-width: 200px;
     max-width: 400px;
-    bottom: 0px;
-    background-color: #945c10;
-    transition: transform 0.4s;
     padding: 0px 8px 8px 8px;
+    background-color: #945c10;
     border-radius: 0px 0px 8px 8px;
     font-family: sans-serif;
     font-size: 14px;
     cursor: default;
     user-select: none;
+    transition: transform 0.4s;
 }
 
 #banner p {
@@ -96,90 +161,4 @@ body {
 
 #banner.show {
     transform: translateY(100%);
-}
-
-#banner-actions {
-    text-align: right;
-}
-
-#banner-actions > input {
-    margin-left: 8px;
-    min-width: 80px;
-    padding: 4px 16px;
-    background-color: #ffffff00;
-    border: 1px solid #ffffff4d;
-    border-radius: 4px;
-    font-size: 12px;
-    transition-property: background-color, border-color;
-    transition-duration: 0.2s;
-    color: #ffffff;
-}
-
-#banner-actions > input:focus {
-    border-color: #ffffff;
-    outline: none;
-}
-
-#banner-actions > input:hover {
-    background-color: #ffffff11;
-}
-
-#banner-actions > input:active {
-    background-color: #0000001c;
-    border-color: #ffffff;
-}
-
-.flex-container {
-    display: flex;
-    flex-direction: column;
-}
-
-.flex-container.row {
-    flex-direction: row;
-}
-
-.button {
-    box-sizing: border-box;
-    width: 16px;
-    height: 16px;
-    margin-left: 12px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid;
-    border-radius: 10px;
-    opacity: 0;
-    transition: opacity 0.2s;
-}
-
-.button > img {
-    width: 12px;
-    height: 12px;
-    opacity: 0;
-    transition: opacity 0.2s;
-}
-
-body:hover .button {
-    opacity: 1;
-}
-
-.button:hover > img {
-    opacity: 0.7;
-}
-
-.button.icon {
-    border: none;
-    border-radius: 0px;
-}
-
-.button.icon > img {
-    width: 16px;
-    height: 16px;
-    opacity: 1;
-    transition: filter 0.2s;
-}
-
-.button.icon:hover > img {
-    opacity: 1;
-    filter: brightness(150%);
 }
