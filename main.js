@@ -36,6 +36,7 @@ ipcMain.on("write-settings", (event, args) => {
     } else {
         store.store = args;
     }
+    updateColors();
     setupAutoUpdater();
     checkForUpdates();
 });
@@ -51,6 +52,10 @@ ipcMain.on("update-install", (event, args) => {
 
 ipcMain.on("update-skip", (event, args) => {
     store.set("updateSkipVersion", args.nextVersion);
+});
+
+ipcMain.on("get-colors", (event, args) => {
+    updateColors();
 });
 
 ipcMain.on("accept", (event, args) => {
@@ -133,6 +138,15 @@ function checkForUpdates() {
     }
 }
 
+function updateColors() {
+    winOut.webContents.send("set-colors", {
+        outputForegroundColor: store.get("outputForegroundColor"),
+        outputForegroundOpacity: store.get("outputForegroundOpacity"),
+        outputBackgroundColor: store.get("outputBackgroundColor"),
+        outputBackgroundOpacity: store.get("outputBackgroundOpacity")
+    });
+}
+
 app.whenReady().then(() => {
     store = new Store({
         schema: {
@@ -147,6 +161,22 @@ app.whenReady().then(() => {
             updateSkipVersion: {
                 type: "string",
                 default: "0.0.0"
+            },
+            outputForegroundColor: {
+                type: "string",
+                default: "#ffffff"
+            },
+            outputForegroundOpacity: {
+                type: "integer",
+                default: 100
+            },
+            outputBackgroundColor: {
+                type: "string",
+                default: "#000000"
+            },
+            outputBackgroundOpacity: {
+                type: "integer",
+                default: 0
             }
         }
     });
