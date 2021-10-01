@@ -17,15 +17,6 @@ h1 {
     font-size: 14px;
 }
 
-.setting {
-    margin-bottom: 8px;
-    user-select: none;
-}
-
-.setting.indented {
-    margin-left: 16px;
-}
-
 /* ---- MUTUAL INPUT STYLES ---- */
 
 label.input {
