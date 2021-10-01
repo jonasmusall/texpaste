@@ -1,13 +1,16 @@
+@import url("common.css");
+
 button {
     min-width: 80px;
     padding: 4px 16px;
-    background-color: #ffffff;
-    color: #000000;
-    border: 1px solid #c9c9c9;
+    background-color: white;
+    border: 1px solid var(--gray-light);
     border-radius: 4px;
-    font-size: 12px;
+    color: black;
+    font: 12px sans-serif;
     transition-property: background-color, border-color;
-    transition-duration: 0.2s;
+    transition-timing-function: ease;
+    transition-duration: var(--duration-xshort);
 }
 
 button + button {
@@ -15,34 +18,34 @@ button + button {
 }
 
 button:focus {
-    border-color: #2a74d4;
+    border-color: var(--blue-light);
     outline: none;
 }
 
 button:hover {
-    background-color: #f5f5f5;
+    background-color: var(--gray-xxlight);
 }
 
 button:active {
-    background-color: #cce2ff;
-    border-color: #2a74d4;
+    background-color: var(--blue-xlight);
+    border-color: var(--blue-light);
 }
 
 button.outlined {
-    background-color: #ffffff00;
-    color: #ffffff;
-    border: 1px solid #ffffff4d;
+    background-color: transparent;
+    border: 1px solid var(--white-transp);
+    color: white;
 }
 
 button.outlined:focus {
-    border-color: #ffffff;
+    border-color: white;
 }
 
 button.outlined:hover {
-    background-color: #ffffff11;
+    background-color: var(--white-xtransp);
 }
 
 button.outlined:active {
-    background-color: #0000001c;
-    border-color: #ffffff;
+    background-color: var(--shadow);
+    border-color: white;
 }

@@ -1,0 +1,22 @@
+:root {
+    --gray-xxlight: #f1f1f1;
+    --gray-xlight: #e6e6e6;
+    --gray-light: #c9c9c9;
+    --gray: #5e5e5e;
+    --gray-dark: #353535;
+    --gray-xdark: #222222;
+    --blue-xlight: #cce2ff;
+    --blue-light: #2a74d4;
+    --blue-transp: #006eff30;
+    --green-light: #00b44b;
+    --green: #0d8840;
+    --red-light: #c7442c;
+    --red: #943726;
+    --orange: #945c10;
+    --white-xtransp: #ffffff11;
+    --white-transp: #ffffff4d;
+    --shadow: #0000001a;
+
+    --duration-xshort: 0.2s;
+    --duration-short: 0.4s;
+}

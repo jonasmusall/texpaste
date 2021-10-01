@@ -79,8 +79,10 @@ function handleKeyUp(event) {
 }
 
 window.addEventListener("DOMContentLoaded", () => {
+    //get elements
     input = document.getElementById("tex-input");
     output = document.getElementById("tex-output");
+    //set up event listeners
     input.addEventListener("input", updateTex);
     input.addEventListener("keyup", handleKeyUp);
     document.getElementById("settings").addEventListener("click", openSettings);
@@ -89,6 +91,7 @@ window.addEventListener("DOMContentLoaded", () => {
     document.getElementById("banner-yes").addEventListener("click", installUpdate);
     document.getElementById("banner-skip").addEventListener("click", skipUpdate);
     new ResizeObserver(sizeChanged).observe(output);
+    
     input.focus();
     checkForUpdate();
 });

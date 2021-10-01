@@ -11,29 +11,25 @@
     </head>
     <body class="flex">
         <h1>Updates</h1>
-        <div class="setting">
-            <input type="checkbox" id="update-check"><label for="update-check">
-                <img src="../assets/icons/check_white.svg">
-            </label><label for="update-check">Check for updates</label>
-        </div>
-        <div class="setting">
-            <input type="checkbox" id="update-autoinstall"><label for="update-autoinstall">
-                <img src="../assets/icons/check_white.svg">
-            </label><label for="update-autoinstall">Install updates automatically</label>
-        </div>
+        <label class="input checkbox">
+            <input type="checkbox" id="update-check"><div></div><span>Check for updates</span>
+        </label>
+        <label class="input checkbox">
+            <input type="checkbox" id="update-autoinstall"><div></div><span>Install updates automatically</span>
+        </label>
         <h1>Output</h1>
-        <div class="setting">
-            <label for="output-foreground-color">Foreground color:</label><label for="output-foreground-color" class="input color"><input type="color" id="output-foreground-color"></label>
-        </div>
-        <div class="setting indented">
-            <label for="output-foreground-opacity">Opacity:</label><input type="range" id="output-foreground-opacity" min="0" max="100" step="1">
-        </div>
-        <div class="setting">
-            <label for="output-background-color">Background color:</label><label for="output-background-color" class="input color"><input type="color" id="output-background-color"></label>
-        </div>
-        <div class="setting indented">
-            <label for="output-background-opacity">Opacity:</label><input type="range" id="output-background-opacity" min="0" max="100" step="1">
-        </div>
+        <label class="input color">
+            <input type="color" id="output-foreground-color"><span>Foreground color:</span><div></div>
+        </label>
+        <label class="indented input range label-before output-after">
+            <input type="range" id="output-foreground-opacity" min="0" max="100" step="1"><output></output><span>Opacity:</span>
+        </label>
+        <label class="input color">
+            <input type="color" id="output-background-color"><span>Background color:</span><div></div>
+        </label>
+        <label class="indented input range label-before output-after">
+            <input type="range" id="output-background-opacity" min="0" max="100" step="1"><output></output><span>Opacity:</span>
+        </label>
         <div class="flex row justify-end align-end">
             <button id="save" autofocus>Save</button><button id="cancel">Cancel</button>
         </div>

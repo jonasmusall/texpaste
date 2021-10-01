@@ -9,6 +9,8 @@ let imgOut;
 let isSettingsWindowOpen = false;
 let store;
 
+/* ---- IPC: FROM INPUT WINDOW ---- */
+
 ipcMain.on("size", (event, args) => {
     winOut.setSize(args.width + 60, args.height);
 });
@@ -17,12 +19,32 @@ ipcMain.on("tex", (event, args) => {
     winOut.webContents.send("tex", args);
 });
 
+ipcMain.on("update-check", (event, args) => {
+    checkForUpdates();
+})
+
+ipcMain.on("update-install", (event, args) => {
+    autoUpdater.downloadUpdate();
+    autoUpdater.autoInstallOnAppQuit = true;
+});
+
+ipcMain.on("update-skip", (event, args) => {
+    store.set("updateSkipVersion", args.nextVersion);
+});
+
+ipcMain.on("accept", (event, args) => {
+    clipboard.writeImage(imgOut);
+    winIn.close();
+});
+
 ipcMain.on("open-settings", (event, args) => {
     if (!isSettingsWindowOpen) {
         isSettingsWindowOpen = true;
         createSettingsWindow();
     }
 });
+
+/* ---- IPC: FROM SETTINGS WINDOW ---- */
 
 ipcMain.handle("read-settings", async (event, args) => {
     return store.store;
@@ -41,27 +63,22 @@ ipcMain.on("write-settings", (event, args) => {
     checkForUpdates();
 });
 
-ipcMain.on("update-check", (event, args) => {
-    checkForUpdates();
-})
-
-ipcMain.on("update-install", (event, args) => {
-    autoUpdater.downloadUpdate();
-    autoUpdater.autoInstallOnAppQuit = true;
-});
-
-ipcMain.on("update-skip", (event, args) => {
-    store.set("updateSkipVersion", args.nextVersion);
-});
+/* ---- IPC: FROM/TO OUTPUT WINDOW ---- */
 
 ipcMain.on("get-colors", (event, args) => {
     updateColors();
 });
 
-ipcMain.on("accept", (event, args) => {
-    clipboard.writeImage(imgOut);
-    winIn.close();
-});
+function updateColors() {
+    winOut.webContents.send("set-colors", {
+        outputForegroundColor: store.get("outputForegroundColor"),
+        outputForegroundOpacity: store.get("outputForegroundOpacity"),
+        outputBackgroundColor: store.get("outputBackgroundColor"),
+        outputBackgroundOpacity: store.get("outputBackgroundOpacity")
+    });
+}
+
+/* ---- WINDOW CREATION METHODS ---- */
 
 function createInputWindow() {
     winIn = new BrowserWindow({
@@ -117,6 +134,8 @@ function createSettingsWindow() {
     winSettings.on("close", () => isSettingsWindowOpen = false);
 }
 
+/* ---- AUTO UPDATER ---- */
+
 function setupAutoUpdater() {
     autoUpdater.autoDownload = false;
     autoUpdater.autoInstallOnAppQuit = store.get("updateAutoinstall");
@@ -138,14 +157,7 @@ function checkForUpdates() {
     }
 }
 
-function updateColors() {
-    winOut.webContents.send("set-colors", {
-        outputForegroundColor: store.get("outputForegroundColor"),
-        outputForegroundOpacity: store.get("outputForegroundOpacity"),
-        outputBackgroundColor: store.get("outputBackgroundColor"),
-        outputBackgroundOpacity: store.get("outputBackgroundOpacity")
-    });
-}
+/* ---- APP STARTUP ---- */
 
 app.whenReady().then(() => {
     store = new Store({
