@@ -11,10 +11,12 @@ body {
     padding: 8px;
     font: 14px sans-serif;
     cursor: default;
+    user-select: none;
 }
 
 h1 {
     font-size: 14px;
+    margin: 8px 0px 6px 0px;
 }
 
 /* ---- MUTUAL INPUT STYLES ---- */
@@ -23,8 +25,9 @@ label.input {
     --spacing: 8px;
     display: flex;
     width: max-content;
-    height: 16px;
-    margin-bottom: 8px;
+    max-width: 100%;
+    min-height: 18px;
+    margin-bottom: 6px;
     flex-direction: row;
     align-items: center;
     user-select: none;

@@ -1,7 +1,7 @@
 const { ipcRenderer } = require("electron");
 
 let settings;
-let inputUpdateCheck, inputUpdateAutoinstall, inputOutputForegroundColor, inputOutputForegroundOpacity, inputOutputBackgroundColor, inputOutputBackgroundOpacity;
+let inputUpdateCheck, inputUpdateAutoinstall, inputBehaviorAllowDrag, inputOutputForegroundColor, inputOutputForegroundOpacity, inputOutputBackgroundColor, inputOutputBackgroundOpacity;
 
 readFromStorage();
 
@@ -28,6 +28,7 @@ function writeToStorage() {
 function readFromInterface() {
     settings.updateCheck = inputUpdateCheck.checked;
     settings.updateAutoinstall = inputUpdateAutoinstall.checked;
+    settings.behaviorAllowDrag = inputBehaviorAllowDrag.checked;
     settings.outputForegroundColor = inputOutputForegroundColor.value;
     settings.outputBackgroundColor = inputOutputBackgroundColor.value;
     settings.outputForegroundOpacity = parseInt(inputOutputForegroundOpacity.value);
@@ -38,6 +39,7 @@ function writeToInterface() {
     inputUpdateCheck.checked = settings.updateCheck;
     inputUpdateAutoinstall.checked = settings.updateAutoinstall;
     setEnabled(inputUpdateAutoinstall, settings.updateCheck);
+    inputBehaviorAllowDrag.checked = settings.behaviorAllowDrag;
     inputOutputForegroundColor.value = settings.outputForegroundColor;
     inputOutputBackgroundColor.value = settings.outputBackgroundColor;
     inputOutputForegroundOpacity.value = settings.outputForegroundOpacity;
@@ -70,6 +72,7 @@ window.addEventListener("DOMContentLoaded", () => {
     //get input elements
     inputUpdateCheck = document.getElementById("update-check");
     inputUpdateAutoinstall = document.getElementById("update-autoinstall");
+    inputBehaviorAllowDrag = document.getElementById("behavior-allow-drag");
     inputOutputForegroundColor = document.getElementById("output-foreground-color");
     inputOutputBackgroundColor = document.getElementById("output-background-color");
     inputOutputForegroundOpacity = document.getElementById("output-foreground-opacity");

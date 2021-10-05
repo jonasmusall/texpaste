@@ -9,7 +9,7 @@ let imgOut;
 let isSettingsWindowOpen = false;
 let store;
 
-/* ---- IPC: FROM INPUT WINDOW ---- */
+/* ---- IPC: FROM/TO INPUT WINDOW ---- */
 
 ipcMain.on("size", (event, args) => {
     winOut.setSize(args.width + 60, args.height);
@@ -31,6 +31,16 @@ ipcMain.on("update-install", (event, args) => {
 ipcMain.on("update-skip", (event, args) => {
     store.set("updateSkipVersion", args.nextVersion);
 });
+
+ipcMain.on("input-get-settings", (event, args) => {
+    winInUpdateSettings();
+});
+
+function winInUpdateSettings() {
+    winIn.webContents.send("update-settings", {
+        behaviorAllowDrag: store.get("behaviorAllowDrag")
+    });
+}
 
 ipcMain.on("accept", (event, args) => {
     clipboard.writeImage(imgOut);
@@ -58,19 +68,20 @@ ipcMain.on("write-settings", (event, args) => {
     } else {
         store.store = args;
     }
-    updateColors();
+    winInUpdateSettings();
+    winOutUpdateSettings();
     setupAutoUpdater();
     checkForUpdates();
 });
 
 /* ---- IPC: FROM/TO OUTPUT WINDOW ---- */
 
-ipcMain.on("get-colors", (event, args) => {
-    updateColors();
+ipcMain.on("output-get-settings", (event, args) => {
+    winOutUpdateSettings();
 });
 
-function updateColors() {
-    winOut.webContents.send("set-colors", {
+function winOutUpdateSettings() {
+    winOut.webContents.send("update-settings", {
         outputForegroundColor: store.get("outputForegroundColor"),
         outputForegroundOpacity: store.get("outputForegroundOpacity"),
         outputBackgroundColor: store.get("outputBackgroundColor"),
@@ -173,6 +184,10 @@ app.whenReady().then(() => {
             updateSkipVersion: {
                 type: "string",
                 default: "0.0.0"
+            },
+            behaviorAllowDrag: {
+                type: "boolean",
+                default: false
             },
             outputForegroundColor: {
                 type: "string",

@@ -11,6 +11,10 @@ body {
     color: white;
 }
 
+body.draggable {
+    -webkit-app-region: drag;
+}
+
 #main-container {
     height: 100%;
 }
@@ -44,6 +48,7 @@ body {
     border-radius: 4px;
     color: var(--gray-xxlight);
     font: 14px monospace;
+    -webkit-app-region: no-drag;
 }
 
 #tex-input:focus {
@@ -70,6 +75,10 @@ body {
     border-radius: 10px;
     opacity: 0;
     transition: opacity var(--duration-xshort) ease;
+}
+
+body.draggable #window-controls > button {
+    opacity: 1;
 }
 
 body:hover #window-controls > button {

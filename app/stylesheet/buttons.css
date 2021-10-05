@@ -11,6 +11,7 @@ button {
     transition-property: background-color, border-color;
     transition-timing-function: ease;
     transition-duration: var(--duration-xshort);
+    -webkit-app-region: no-drag;
 }
 
 button + button {

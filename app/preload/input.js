@@ -9,6 +9,14 @@ ipcRenderer.on("update-notify", (event, args) => {
     showUpdateBanner("A new version (" + nextVersion + ") is available, would you like to install it when closing the app?");
 });
 
+ipcRenderer.on("update-settings", (event, args) => {
+    if (args.behaviorAllowDrag) {
+        document.body.classList.add("draggable");
+    } else {
+        document.body.classList.remove("draggable");
+    }
+});
+
 function sizeChanged() {
     ipcRenderer.send("size", {
         width: output.offsetWidth,
@@ -92,6 +100,7 @@ window.addEventListener("DOMContentLoaded", () => {
     document.getElementById("banner-skip").addEventListener("click", skipUpdate);
     new ResizeObserver(sizeChanged).observe(output);
     
+    ipcRenderer.send("input-get-settings");
     input.focus();
     checkForUpdate();
 });

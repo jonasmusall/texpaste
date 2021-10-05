@@ -16,7 +16,7 @@ ipcRenderer.on("tex", (event, args) => {
     );
 });
 
-ipcRenderer.on("set-colors", (event, args) => {
+ipcRenderer.on("update-settings", (event, args) => {
     output.style.color = args.outputForegroundColor;
     output.style.opacity = args.outputForegroundOpacity / 100;
     background.style.backgroundColor = args.outputBackgroundColor;
@@ -26,5 +26,5 @@ ipcRenderer.on("set-colors", (event, args) => {
 window.addEventListener("DOMContentLoaded", () => {
     output = document.getElementById("tex-output");
     background = document.getElementById("background");
-    ipcRenderer.send("get-colors");
+    ipcRenderer.send("output-get-settings");
 });
