@@ -1,9 +1,11 @@
+<img src="./docs/images/ui_preview.png">
+
 # TeXPaste
 Input TeX code to get a live preview. Press ENTER or click the green checkmark to copy the result to the clipboard and use it in another application. ESCAPE or clicking the close button will discard the output.
 
 Made with [Electron](https://www.electronjs.org/) and [KaTeX](https://katex.org/).
 
-<img src="./docs/images/demo.png">
+<img src="./docs/images/live_demo.gif">
 
 ## Installation (Windows)
 Download `texpaste-Setup-[version number].exe` from one of the [releases](https://github.com/jonasmusall/texpaste/releases) and execute it. You will probably get a warning that the program was not executed due to security concerns. This is because release signing is currently not yet implemented. However, you can use the SHA512 hash to verify the file.
