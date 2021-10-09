@@ -1,6 +1,6 @@
 name: Bug Report
 description: Something is breaking the app 
-title: ""
+title: "[Bug]"
 labels: "bug"
 body:
 - type: input

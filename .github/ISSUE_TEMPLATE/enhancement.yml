@@ -1,6 +1,6 @@
 name: Enhancement Request
 description: Suggest a new idea
-title: ""
+title: "[Enhancement]"
 labels: "enhancement"
 body:
 - type: textarea

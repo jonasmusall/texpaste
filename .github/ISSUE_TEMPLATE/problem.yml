@@ -1,6 +1,6 @@
 name: Problem Report
 description: Something is wrong, but not as bad as a bug
-title: ""
+title: "[Problem]"
 labels: "problem"
 body:
 - type: input
