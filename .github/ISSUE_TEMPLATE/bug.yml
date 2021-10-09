@@ -1,0 +1,25 @@
+name: Bug Report
+description: Something is breaking the app 
+title: ""
+labels: "bug"
+body:
+- type: input
+  attributes:
+    label: Version
+    description: What version of TeXPaste are you running?
+    placeholder: 1.1.0
+  validations:
+    required: true
+- type: input
+  attributes:
+    label: Operating System
+    description: What operating system are you using?
+    placeholder: Windows 10
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: Bug Description
+    description: Provide a list of steps to reproduce the bug and a detailed comparison of the expected and actual behavior.
+  validations:
+    required: true

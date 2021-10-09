@@ -1,0 +1,11 @@
+name: Enhancement Request
+description: Suggest a new idea
+title: ""
+labels: "enhancement"
+body:
+- type: textarea
+  attributes:
+    label: Proposed Enhancement
+    description: Describe the new feature or enhancement you would like to propose.
+  validations:
+    required: true
