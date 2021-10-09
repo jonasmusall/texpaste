@@ -26,4 +26,4 @@ To build or run this app directly from the source code, you will need [Node.js](
 | `npm run dist` | Packages while also creating an installer.                         |
 
 ## Upcoming features
-Custom TeX macros, possibly an autocomplete feature.
+Custom TeX macros, possibly an autocomplete feature. Feel free to suggest something or file a bug report on the [issue tracker](https://github.com/jonasmusall/texpaste/issues).
