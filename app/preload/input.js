@@ -17,13 +17,6 @@ ipcRenderer.on("update-settings", (event, args) => {
     }
 });
 
-function sizeChanged() {
-    ipcRenderer.send("size", {
-        width: output.offsetWidth,
-        height: output.offsetHeight
-    });
-}
-
 function updateTex() {
     ipcRenderer.send("tex", input.value);
     katex.render(
@@ -98,7 +91,6 @@ window.addEventListener("DOMContentLoaded", () => {
     document.getElementById("cancel").addEventListener("click", cancel);
     document.getElementById("banner-yes").addEventListener("click", installUpdate);
     document.getElementById("banner-skip").addEventListener("click", skipUpdate);
-    new ResizeObserver(sizeChanged).observe(output);
     
     ipcRenderer.send("input-get-settings");
     input.focus();

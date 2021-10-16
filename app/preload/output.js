@@ -23,8 +23,16 @@ ipcRenderer.on("update-settings", (event, args) => {
     background.style.opacity = args.outputBackgroundOpacity / 100;
 });
 
+function sizeChanged() {
+    ipcRenderer.send("size", {
+        width: output.offsetWidth,
+        height: output.offsetHeight
+    });
+}
+
 window.addEventListener("DOMContentLoaded", () => {
     output = document.getElementById("tex-output");
     background = document.getElementById("background");
+    new ResizeObserver(sizeChanged).observe(output);
     ipcRenderer.send("output-get-settings");
 });
