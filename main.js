@@ -38,7 +38,8 @@ ipcMain.on("input-get-settings", (event, args) => {
 
 function winInUpdateSettings() {
     winIn.webContents.send("update-settings", {
-        behaviorAllowDrag: store.get("behaviorAllowDrag")
+        behaviorAllowDrag: store.get("behaviorAllowDrag"),
+        behaviorMacros: store.get("behaviorMacros")
     });
 }
 
@@ -188,6 +189,10 @@ app.whenReady().then(() => {
             behaviorAllowDrag: {
                 type: "boolean",
                 default: false
+            },
+            behaviorMacros: {
+                type: "object",
+                default: {}
             },
             outputForegroundColor: {
                 type: "string",

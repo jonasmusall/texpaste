@@ -3,6 +3,7 @@ const katex = require("katex");
 
 let input, output;
 let nextVersion;
+let macros = {};
 
 ipcRenderer.on("update-notify", (event, args) => {
     nextVersion = args.nextVersion;
@@ -15,6 +16,7 @@ ipcRenderer.on("update-settings", (event, args) => {
     } else {
         document.body.classList.remove("draggable");
     }
+    macros = args.behaviorMacros;
 });
 
 function updateTex() {
@@ -26,9 +28,10 @@ function updateTex() {
             displayMode: true,
             output: "html",
             throwOnError: false,
-            strict: "ignore"
+            strict: "ignore",
+            macros: macros
         }
-    )
+    );
 }
 
 function openSettings() {
