@@ -129,7 +129,7 @@ function createOutputWindow() {
 function createSettingsWindow() {
     const winSettings = new BrowserWindow({
         width: 300,
-        height: 400,
+        height: 550,
         resizable: false,
         minimizable: false,
         maximizable: false,

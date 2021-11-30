@@ -32,6 +32,12 @@ button:active {
     border-color: var(--blue-light);
 }
 
+button:disabled {
+    background-color: white;
+    border-color: var(--gray-xlight);
+    color: var(--gray-light);
+}
+
 button.outlined {
     background-color: transparent;
     border: 1px solid var(--white-transp);

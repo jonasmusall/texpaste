@@ -12,30 +12,48 @@
     <body class="flex">
         <h1>Updates</h1>
         <label class="input checkbox">
-            <input type="checkbox" id="update-check"><div></div><span>Check for updates</span>
+            <input type="checkbox" id="update-check" tabindex="0"><div></div><span>Check for updates</span>
         </label>
         <label class="input checkbox">
-            <input type="checkbox" id="update-autoinstall"><div></div><span>Install updates automatically</span>
+            <input type="checkbox" id="update-autoinstall" tabindex="1"><div></div><span>Install updates automatically</span>
         </label>
         <h1>Behavior</h1>
         <label class="input checkbox">
-            <input type="checkbox" id="behavior-allow-drag"><div></div><span>Make window draggable (disables the hover effect)</span>
+            <input type="checkbox" id="behavior-allow-drag" tabindex="2"><div></div><span>Make window draggable (disables the hover effect)</span>
         </label>
+        <h1>Macros</h1>
+        <p>Use e.g. <span class="monospace">#1</span> in definition for first macro arg.</p>
+        <label class="input table">
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>Definition</th>
+                </tr>
+            </table>
+            <div class="tbody">
+                <div class="empty">No macros defined</div>
+                <table id="macro-table">
+                </table>
+            </div>
+        </label>
+        <div class="flex row">
+            <button id="macro-new" tabindex="4">New</button><button id="macro-remove" tabindex="5" disabled>Remove</button>
+        </div>
         <h1>Output</h1>
         <label class="input color">
-            <input type="color" id="output-foreground-color"><span>Foreground color:</span><div></div>
+            <input type="color" id="output-foreground-color" tabindex="6"><span>Foreground color:</span><div></div>
         </label>
         <label class="indented input range label-before output-after">
-            <input type="range" id="output-foreground-opacity" min="0" max="100" step="1"><output></output><span>Opacity:</span>
+            <input type="range" id="output-foreground-opacity" min="0" max="100" step="1" tabindex="7"><output></output><span>Opacity:</span>
         </label>
         <label class="input color">
-            <input type="color" id="output-background-color"><span>Background color:</span><div></div>
+            <input type="color" id="output-background-color" tabindex="8"><span>Background color:</span><div></div>
         </label>
         <label class="indented input range label-before output-after">
-            <input type="range" id="output-background-opacity" min="0" max="100" step="1"><output></output><span>Opacity:</span>
+            <input type="range" id="output-background-opacity" min="0" max="100" step="1" tabindex="9"><output></output><span>Opacity:</span>
         </label>
         <div class="flex row justify-end align-end">
-            <button id="save" autofocus>Save</button><button id="cancel">Cancel</button>
+            <button id="save" tabindex="10" autofocus>Save</button><button id="cancel" tabindex="11">Cancel</button>
         </div>
     </body>
 </html>

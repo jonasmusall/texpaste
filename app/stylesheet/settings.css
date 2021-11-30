@@ -19,6 +19,14 @@ h1 {
     margin: 8px 0px 6px 0px;
 }
 
+p {
+    margin: 0px 0px 6px 0px;
+}
+
+span.monospace {
+    font-family: monospace;
+}
+
 /* ---- MUTUAL INPUT STYLES ---- */
 
 label.input {
@@ -215,4 +223,79 @@ label.input.range > input:hover::-webkit-slider-thumb {
 label.input.range > input:focus::-webkit-slider-thumb {
     border-color: var(--blue-light);
     box-shadow: 0px 0px 0px 3px var(--blue-transp);
+}
+
+/* -------- TABLE -------- */
+
+label.input.table {
+    --spacing: 0px;
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    border: 1px solid var(--gray-light);
+    border-radius: 4px;
+}
+
+label.input.table table {
+    --color: black;
+    width: 100%;
+    background-color: white;
+    border-collapse: collapse;
+}
+
+label.input.table th, label.input.table td {
+    box-sizing: border-box;
+    font-weight: normal;
+    text-align: start;
+    padding: 1px 0px 1px 3px;
+}
+
+label.input.table th:first-of-type, label.input.table td:first-of-type {
+    width: 70px;
+}
+
+label.input.table th {
+    border-bottom: 1px solid var(--gray-light);
+    background-color: var(--gray-xxlight);
+    border-radius: 0px 3px 0px 0px;
+}
+
+label.input.table th:first-of-type {
+    border-right: 1px solid var(--gray-light);
+    border-radius: 3px 0px 0px 0px;
+}
+
+label.input.table > div.tbody {
+    min-height: 90px;
+    max-height: 90px;
+    overflow: auto;
+}
+
+label.input.table tr.selected {
+    --color: white;
+    background-color: var(--blue-light);
+}
+
+label.input.table td > input {
+    box-sizing: border-box;
+    width: 100%;
+    margin: 0px 0px 1px 0px;
+    padding: 0px;
+    outline: none;
+    border: none;
+    background-color: transparent;
+    font: 14px monospace;
+    color: var(--color);
+}
+
+label.input.table td > input::selection {
+    color: black;
+    background: white;
+}
+
+label.input.table > div.tbody > div.empty {
+    position: absolute;
+    padding: 2px 0px 2px 3px;
+    z-index: -1;
+    color: var(--gray-light);
 }
