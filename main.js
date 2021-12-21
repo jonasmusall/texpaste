@@ -1,96 +1,55 @@
+console.time("startup");
+console.time("show");
+/* ---- MODULES ---- */
+const Deferred = require("./lib/deferred");
 const { app, BrowserWindow, ipcMain, clipboard } = require("electron");
-const Store = require("electron-store");
-const { autoUpdater } = require("electron-updater");
-const semver = require("semver");
 const path = require("path");
+const updaterDf = new Deferred();
+const semverDf = new Deferred();
 
+
+/* ---- VARS ---- */
 let winIn, winOut;
-let imgOut;
+const winInDf = new Deferred();
+const winOutDf = new Deferred();
+const storeDf = new Deferred();
+let imgOut = null;
 let isSettingsWindowOpen = false;
-let store;
 
-/* ---- IPC: FROM/TO INPUT WINDOW ---- */
 
-ipcMain.on("size", (event, args) => {
-    winOut.setSize(args.width + 60, args.height);
-});
-
-ipcMain.on("tex", (event, args) => {
-    winOut.webContents.send("tex", args);
-});
-
-ipcMain.on("update-check", (event, args) => {
-    checkForUpdates();
-})
-
-ipcMain.on("update-install", (event, args) => {
-    autoUpdater.downloadUpdate();
-    autoUpdater.autoInstallOnAppQuit = true;
-});
-
-ipcMain.on("update-skip", (event, args) => {
-    store.set("updateSkipVersion", args.nextVersion);
-});
-
-ipcMain.on("input-get-settings", (event, args) => {
+/* ---- IPC ---- */
+ipcMain.on("input:ready", () => {
+    console.log("Resolving winIn");
+    winInDf.resolve(winIn);
     winInUpdateSettings();
+    console.timeEnd("startup");
 });
+ipcMain.on("input:tex", async (event, args) => (await winOutDf.promise).webContents.send("tex", args));
+ipcMain.on("input:accept", acceptInput);
+ipcMain.on("input:open-settings", createSettingsWindow);
+ipcMain.on("input:update-check", checkForUpdates);
+ipcMain.on("input:update-install", installUpdateOnQuit);
 
-function winInUpdateSettings() {
-    winIn.webContents.send("update-settings", {
-        behaviorAllowDrag: store.get("behaviorAllowDrag")
-    });
-}
-
-ipcMain.on("accept", (event, args) => {
-    clipboard.writeImage(imgOut);
-    winIn.close();
-});
-
-ipcMain.on("open-settings", (event, args) => {
-    if (!isSettingsWindowOpen) {
-        isSettingsWindowOpen = true;
-        createSettingsWindow();
-    }
-});
-
-/* ---- IPC: FROM SETTINGS WINDOW ---- */
-
-ipcMain.handle("read-settings", async (event, args) => {
-    return store.store;
-});
-
-ipcMain.on("write-settings", (event, args) => {
-    //if updateCheck was reenabled, clear updateSkipVersion
-    if (args.updateCheck && !store.get("updateCheck")) {
-        store.store = args;
-        store.reset("updateSkipVersion");
-    } else {
-        store.store = args;
-    }
-    winInUpdateSettings();
-    winOutUpdateSettings();
-    setupAutoUpdater();
-    checkForUpdates();
-});
-
-/* ---- IPC: FROM/TO OUTPUT WINDOW ---- */
-
-ipcMain.on("output-get-settings", (event, args) => {
+ipcMain.on("output:ready", () => {
+    winOutDf.resolve(winOut);
     winOutUpdateSettings();
 });
+ipcMain.on("output:size", (event, args) => winOut.setSize(args.width + 60, args.height));
 
-function winOutUpdateSettings() {
-    winOut.webContents.send("update-settings", {
-        outputForegroundColor: store.get("outputForegroundColor"),
-        outputForegroundOpacity: store.get("outputForegroundOpacity"),
-        outputBackgroundColor: store.get("outputBackgroundColor"),
-        outputBackgroundOpacity: store.get("outputBackgroundOpacity")
-    });
-}
+ipcMain.handle("settings:read", async () => (await storeDf.promise).store);
+ipcMain.on("settings:write", (event, args) => updateSettings(args));
 
-/* ---- WINDOW CREATION METHODS ---- */
 
+/* ---- APP STARTUP ---- */
+app.whenReady().then(() => {
+    createInputWindow();
+    createOutputWindow();
+    // call afterFrontEndReady some time after input window is (hopefully) done
+    setTimeout(afterFrontEndReady, 300);
+});
+
+
+/* ---- WINDOW FUNCTIONS ---- */
 function createInputWindow() {
     winIn = new BrowserWindow({
         width: 700,
@@ -103,8 +62,8 @@ function createInputWindow() {
         }
     });
     winIn.loadFile("app/input.html");
-    winIn.once("ready-to-show", () => winIn.show());
-    winIn.on("close", () => winOut.close());
+    winIn.once("ready-to-show", () => { winIn.show(); console.timeEnd("show"); });
+    winIn.on("close", async () => (await winOutDf.promise).close());
 }
 
 function createOutputWindow() {
@@ -126,52 +85,81 @@ function createOutputWindow() {
 }
 
 function createSettingsWindow() {
-    const winSettings = new BrowserWindow({
-        width: 300,
-        height: 400,
-        resizable: false,
-        minimizable: false,
-        maximizable: false,
-        show: false,
-        parent: winIn,
-        modal: true,
-        webPreferences: {
-            preload: path.join(__dirname, "app/preload/settings.js")
-        }
-    });
-    winSettings.menuBarVisible = false;
-    winSettings.loadFile("app/settings.html");
-    winSettings.once("ready-to-show", () => winSettings.show());
-    winSettings.on("close", () => isSettingsWindowOpen = false);
+    if (!isSettingsWindowOpen) {
+        isSettingsWindowOpen = true;
+        const winSettings = new BrowserWindow({
+            width: 300,
+            height: 400,
+            resizable: false,
+            minimizable: false,
+            maximizable: false,
+            show: false,
+            parent: winIn,
+            modal: true,
+            webPreferences: {
+                preload: path.join(__dirname, "app/preload/settings.js")
+            }
+        });
+        winSettings.menuBarVisible = false;
+        winSettings.loadFile("app/settings.html");
+        winSettings.once("ready-to-show", () => winSettings.show());
+        winSettings.on("close", () => isSettingsWindowOpen = false);
+    }
 }
 
-/* ---- AUTO UPDATER ---- */
+const winInUpdateSettings = async () => (await winInDf.promise).webContents.send("settings", (await storeDf.promise).store);
+const winOutUpdateSettings = async () => (await winOutDf.promise).webContents.send("settings", (await storeDf.promise).store);
 
-function setupAutoUpdater() {
-    autoUpdater.autoDownload = false;
-    autoUpdater.autoInstallOnAppQuit = store.get("updateAutoinstall");
-    autoUpdater.removeAllListeners("update-available");
-    autoUpdater.addListener("update-available", (info) => {
-        if (semver.gt(info.version, store.get("updateSkipVersion"))) {
+
+/* ---- UTILITY FUNCTIONS ---- */
+async function acceptInput() {
+    if (imgOut != null) {
+        clipboard.writeImage(imgOut);
+    }
+    (await winInDf.promise).close();
+}
+
+function afterFrontEndReady() {
+    console.log("Initializing updater and store");
+    updaterDf.resolve(require("electron-updater").autoUpdater);
+    semverDf.resolve(require("semver"));
+    initUpdater();
+    checkForUpdates();
+    initStore();
+}
+
+async function initUpdater() {
+    const updater = await updaterDf.promise;
+    updater.autoDownload = false;
+    updater.autoInstallOnAppQuit = (await storeDf.promise).get("updateAutoinstall");
+    updater.removeAllListeners("update-available");
+    updater.addListener("update-available", async (info) => {
+        const store = await storeDf.promise;
+        if ((await semverDf.promise).gt(info.version, store.get("updateSkipVersion"))) {
             if (store.get("updateAutoinstall")) {
                 autoUpdater.downloadUpdate();
             } else {
-                winIn.webContents.send("update-notify", { nextVersion: info.version });
+                (await winInDf.promise).webContents.send("update-notify", { nextVersion: info.version });
             }
         }
     })
 }
 
-function checkForUpdates() {
-    if (store.get("updateCheck")) {
-        autoUpdater.checkForUpdates();
+async function checkForUpdates() {
+    if ((await storeDf.promise).get("updateCheck")) {
+        (await updaterDf.promise).checkForUpdates();
     }
 }
 
-/* ---- APP STARTUP ---- */
+async function installUpdateOnQuit() {
+    const updater = await updaterDf.promise;
+    updater.downloadUpdate();
+    updater.autoInstallOnAppQuit = true;
+}
 
-app.whenReady().then(() => {
-    store = new Store({
+function initStore() {
+    const Store = require("electron-store");
+    storeDf.resolve(new Store({
         schema: {
             updateCheck: {
                 type: "boolean",
@@ -206,8 +194,22 @@ app.whenReady().then(() => {
                 default: 0
             }
         }
-    });
-    setupAutoUpdater();
-    createOutputWindow();
-    createInputWindow();
-});
+    }));
+    console.log("Store initialized");
+}
+
+async function updateSettings(settings) {
+    console.log("Updating settings");
+    const store = await storeDf.promise;
+    // if updateCheck was reenabled, clear updateSkipVersion
+    if (settings.updateCheck && !store.get("updateCheck")) {
+        store.store = settings;
+        store.reset("updateSkipVersion");
+    } else {
+        store.store = settings;
+    }
+    winInUpdateSettings();
+    winOutUpdateSettings();
+    initUpdater();
+    checkForUpdates();
+}

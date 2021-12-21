@@ -1,77 +1,58 @@
+console.time("preload");
+/* ---- MODULES ---- */
 const { ipcRenderer } = require("electron");
 const katex = require("katex");
 
-let input, output;
+
+/* ---- VARS ---- */
+let eInput, eOutput;
 let nextVersion;
 
-ipcRenderer.on("update-notify", (event, args) => {
-    nextVersion = args.nextVersion;
-    showUpdateBanner("A new version (" + nextVersion + ") is available, would you like to install it when closing the app?");
+
+/* ---- IPC ---- */
+ipcRenderer.on("settings", (event, args) => applySettings(args));
+ipcRenderer.on("update-notify", (event, args) => handleUpdateAvailable(args.nextVersion));
+
+
+/* ---- INIT ---- */
+window.addEventListener("DOMContentLoaded", () => {
+    eInput = document.getElementById("tex-input");
+    eOutput = document.getElementById("tex-output");
+
+    handle(eInput, "input", updateTex);
+    handle(eInput, "keyup", handleInputKeyUp);
+    handle(get("accept"), "click", accept);
+    handle(get("cancel"), "click", cancel);
+    handle(get("settings"), "click", () => ipcRenderer.send("input:open-settings"));
+    handle(get("banner-yes"), "click", installUpdate);
+    handle(get("banner-skip"), "click", skipUpdate);
+    
+    ipcRenderer.send("input:ready");
 });
 
-ipcRenderer.on("update-settings", (event, args) => {
-    if (args.behaviorAllowDrag) {
-        document.body.classList.add("draggable");
-    } else {
-        document.body.classList.remove("draggable");
-    }
-});
+
+/* ---- HANDLER & UTILITY FUNCTIONS ---- */
+const get = (id) => document.getElementById(id);
+const handle = (element, event, listener) => element.addEventListener(event, listener);
+
+const accept = () => ipcRenderer.send("input:accept");
+const cancel = window.close;
 
 function updateTex() {
-    ipcRenderer.send("tex", input.value);
+    ipcRenderer.send("input:tex", eInput.value);
     katex.render(
-        input.value,
-        output,
+        eInput.value,
+        eOutput,
         {
             displayMode: true,
             output: "html",
             throwOnError: false,
             strict: "ignore"
         }
-    )
+    );
 }
 
-function openSettings() {
-    ipcRenderer.send("open-settings");
-}
-
-function checkForUpdate() {
-    ipcRenderer.send("update-check");
-}
-
-function installUpdate() {
-    ipcRenderer.send("update-install");
-    hideUpdateBanner();
-}
-
-function skipUpdate() {
-    ipcRenderer.send("update-skip", { nextVersion: nextVersion });
-    hideUpdateBanner();
-}
-
-function showUpdateBanner(text) {
-    document.getElementById("banner-text").innerHTML = text;
-    document.getElementById("banner-yes").tabIndex = 0;
-    document.getElementById("banner-skip").tabIndex = 1;
-    document.getElementById("banner").classList.add("show");
-}
-
-function hideUpdateBanner() {
-    document.getElementById("banner-yes").tabIndex = -1;
-    document.getElementById("banner-skip").tabIndex = -1;
-    document.getElementById("banner").classList.remove("show");
-    input.focus();
-}
-
-function accept() {
-    ipcRenderer.send("accept");
-}
-
-function cancel() {
-    window.close();
-}
-
-function handleKeyUp(event) {
+function handleInputKeyUp(event) {
     if (event.key == "Enter") {
         accept();
     } else if (event.key == "Escape") {
@@ -79,20 +60,39 @@ function handleKeyUp(event) {
     }
 }
 
-window.addEventListener("DOMContentLoaded", () => {
-    //get elements
-    input = document.getElementById("tex-input");
-    output = document.getElementById("tex-output");
-    //set up event listeners
-    input.addEventListener("input", updateTex);
-    input.addEventListener("keyup", handleKeyUp);
-    document.getElementById("settings").addEventListener("click", openSettings);
-    document.getElementById("accept").addEventListener("click", accept);
-    document.getElementById("cancel").addEventListener("click", cancel);
-    document.getElementById("banner-yes").addEventListener("click", installUpdate);
-    document.getElementById("banner-skip").addEventListener("click", skipUpdate);
-    
-    ipcRenderer.send("input-get-settings");
-    input.focus();
-    checkForUpdate();
-});
+function applySettings(settings) {
+    if (settings.behaviorAllowDrag) {
+        document.body.classList.add("draggable");
+    } else {
+        document.body.classList.remove("draggable");
+    }
+}
+
+function handleUpdateAvailable(version) {
+    nextVersion = version;
+    showUpdateBanner("A new version (" + nextVersion + ") is available, would you like to install it when closing the app?");
+}
+
+function showUpdateBanner(text) {
+    get("banner-text").innerHTML = text;
+    get("banner-yes").tabIndex = 0;
+    get("banner-skip").tabIndex = 1;
+    get("banner").classList.add("show");
+}
+
+function hideUpdateBanner() {
+    get("banner-yes").tabIndex = -1;
+    get("banner-skip").tabIndex = -1;
+    get("banner").classList.remove("show");
+    eInput.focus();
+}
+
+function installUpdate() {
+    ipcRenderer.send("input:update-install");
+    hideUpdateBanner();
+}
+
+function skipUpdate() {
+    ipcRenderer.send("input:update-skip", { nextVersion: nextVersion });
+    hideUpdateBanner();
+}
