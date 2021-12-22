@@ -1,42 +1,42 @@
-console.time("preload");
+console.time('preload')
 /* ---- MODULES ---- */
-const { ipcRenderer } = require("electron");
-const katex = require("katex");
+const { ipcRenderer } = require('electron')
+const katex = require('katex')
 
 
 /* ---- VARS ---- */
-let eInput, eOutput;
-let nextVersion;
+let eInput, eOutput
+let nextVersion
 
 
 /* ---- IPC ---- */
-ipcRenderer.on("settings", (event, args) => applySettings(args));
-ipcRenderer.on("update-notify", (event, args) => handleUpdateAvailable(args.nextVersion));
+ipcRenderer.on('settings', (event, args) => applySettings(args))
+ipcRenderer.on('update-notify', (event, args) => handleUpdateAvailable(args.nextVersion))
 
 
 /* ---- INIT ---- */
-window.addEventListener("DOMContentLoaded", () => {
-    eInput = document.getElementById("tex-input");
-    eOutput = document.getElementById("tex-output");
+window.addEventListener('DOMContentLoaded', () => {
+    eInput = document.getElementById('tex-input')
+    eOutput = document.getElementById('tex-output')
 
-    handle(eInput, "input", updateTex);
-    handle(eInput, "keyup", handleInputKeyUp);
-    handle(get("accept"), "click", accept);
-    handle(get("cancel"), "click", cancel);
-    handle(get("settings"), "click", () => ipcRenderer.send("input:open-settings"));
-    handle(get("banner-yes"), "click", installUpdate);
-    handle(get("banner-skip"), "click", skipUpdate);
+    handle(eInput, 'input', updateTex)
+    handle(eInput, 'keyup', handleInputKeyUp)
+    handle(get('accept'), 'click', accept)
+    handle(get('cancel'), 'click', cancel)
+    handle(get('settings'), 'click', () => ipcRenderer.send('input:open-settings'))
+    handle(get('banner-yes'), 'click', installUpdate)
+    handle(get('banner-skip'), 'click', skipUpdate)
     
-    ipcRenderer.send("input:ready");
-});
+    ipcRenderer.send('input:ready')
+})
 
 
 /* ---- HANDLER & UTILITY FUNCTIONS ---- */
-const get = (id) => document.getElementById(id);
-const handle = (element, event, listener) => element.addEventListener(event, listener);
+const get = (id) => document.getElementById(id)
+const handle = (element, event, listener) => element.addEventListener(event, listener)
 
 function accept() {
-    ipcRenderer.send("input:accept");
+    ipcRenderer.send('input:accept')
 }
 
 function cancel() {
@@ -44,60 +44,60 @@ function cancel() {
 }
 
 function updateTex() {
-    ipcRenderer.send("input:tex", eInput.value);
+    ipcRenderer.send('input:tex', eInput.value)
     katex.render(
         eInput.value,
         eOutput,
         {
             displayMode: true,
-            output: "html",
+            output: 'html',
             throwOnError: false,
-            strict: "ignore"
+            strict: 'ignore'
         }
-    );
+    )
 }
 
 function handleInputKeyUp(event) {
-    if (event.key == "Enter") {
-        accept();
-    } else if (event.key == "Escape") {
-        cancel();
+    if (event.key == 'Enter') {
+        accept()
+    } else if (event.key == 'Escape') {
+        cancel()
     }
 }
 
 function applySettings(settings) {
     if (settings.behaviorAllowDrag) {
-        document.body.classList.add("draggable");
+        document.body.classList.add('draggable')
     } else {
-        document.body.classList.remove("draggable");
+        document.body.classList.remove('draggable')
     }
 }
 
 function handleUpdateAvailable(version) {
-    nextVersion = version;
-    showUpdateBanner("A new version (" + nextVersion + ") is available, would you like to install it when closing the app?");
+    nextVersion = version
+    showUpdateBanner('A new version (' + nextVersion + ') is available, would you like to install it when closing the app?')
 }
 
 function showUpdateBanner(text) {
-    get("banner-text").innerHTML = text;
-    get("banner-yes").tabIndex = 0;
-    get("banner-skip").tabIndex = 1;
-    get("banner").classList.add("show");
+    get('banner-text').innerHTML = text
+    get('banner-yes').tabIndex = 0
+    get('banner-skip').tabIndex = 1
+    get('banner').classList.add('show')
 }
 
 function hideUpdateBanner() {
-    get("banner-yes").tabIndex = -1;
-    get("banner-skip").tabIndex = -1;
-    get("banner").classList.remove("show");
-    eInput.focus();
+    get('banner-yes').tabIndex = -1
+    get('banner-skip').tabIndex = -1
+    get('banner').classList.remove('show')
+    eInput.focus()
 }
 
 function installUpdate() {
-    ipcRenderer.send("input:update-install");
-    hideUpdateBanner();
+    ipcRenderer.send('input:update-install')
+    hideUpdateBanner()
 }
 
 function skipUpdate() {
-    ipcRenderer.send("input:update-skip", { nextVersion: nextVersion });
-    hideUpdateBanner();
+    ipcRenderer.send('input:update-skip', { nextVersion: nextVersion })
+    hideUpdateBanner()
 }
