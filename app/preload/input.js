@@ -35,8 +35,13 @@ window.addEventListener("DOMContentLoaded", () => {
 const get = (id) => document.getElementById(id);
 const handle = (element, event, listener) => element.addEventListener(event, listener);
 
-const accept = () => ipcRenderer.send("input:accept");
-const cancel = window.close;
+function accept() {
+    ipcRenderer.send("input:accept");
+}
+
+function cancel() {
+    window.close()
+}
 
 function updateTex() {
     ipcRenderer.send("input:tex", eInput.value);

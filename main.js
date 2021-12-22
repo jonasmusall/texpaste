@@ -107,8 +107,13 @@ function createSettingsWindow() {
     }
 }
 
-const winInUpdateSettings = async () => (await winInDf.promise).webContents.send("settings", (await storeDf.promise).store);
-const winOutUpdateSettings = async () => (await winOutDf.promise).webContents.send("settings", (await storeDf.promise).store);
+async function winInUpdateSettings() {
+    (await winInDf.promise).webContents.send("settings", (await storeDf.promise).store);
+}
+
+async function winOutUpdateSettings() {
+    (await winOutDf.promise).webContents.send("settings", (await storeDf.promise).store);
+}
 
 
 /* ---- UTILITY FUNCTIONS ---- */

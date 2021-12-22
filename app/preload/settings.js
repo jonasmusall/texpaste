@@ -40,14 +40,19 @@ function save() {
     writeToStorage();
     cancel();
 }
-const cancel = window.close;
+
+function cancel() {
+    window.close();
+}
 
 async function readFromStorage() {
     settings = await ipcRenderer.invoke("settings:read");
     writeToInterface();
 }
 
-const writeToStorage = () => ipcRenderer.send("settings:write", settings);
+function writeToStorage() {
+    ipcRenderer.send("settings:write", settings);
+}
 
 function readFromInterface() {
     settings.updateCheck = eInUpdateCheck.checked;
@@ -74,12 +79,19 @@ function writeToInterface() {
     updateInputValueStyle(eInOutputBackgroundOpacity.parentNode, eInOutputBackgroundOpacity.value + "%");
 }
 
-const setEnabled = (element, enabled) => element.disabled = !enabled;
+function setEnabled(element, enabled) {
+    element.disabled = !enabled;
+}
 
 function updateInputValueStyle(element, value) {
     element.style.setProperty("--value", value);
     element.style.setProperty("--value-string", JSON.stringify(value));
 }
 
-const setupColorInput = (element) => handle(element, "input", () => updateInputValueStyle(element.parentNode, element.value));
-const setupRangeInput = (element) => handle(element, "input", () => updateInputValueStyle(element.parentNode, element.value + "%"));
+function setupColorInput(element) {
+    handle(element, "input", () => updateInputValueStyle(element.parentNode, element.value));
+}
+
+function setupRangeInput(element) {
+    handle(element, "input", () => updateInputValueStyle(element.parentNode, element.value + "%"));
+}
