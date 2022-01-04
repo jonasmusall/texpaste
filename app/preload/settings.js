@@ -1,90 +1,97 @@
-const { ipcRenderer } = require("electron");
+/* ---- MODULES ---- */
+const { ipcRenderer } = require('electron')
 
-let settings;
-let inputUpdateCheck, inputUpdateAutoinstall, inputBehaviorAllowDrag, inputOutputForegroundColor, inputOutputForegroundOpacity, inputOutputBackgroundColor, inputOutputBackgroundOpacity;
 
-readFromStorage();
+/* ---- VARS ---- */
+let eInUpdateCheck, eInUpdateAutoinstall
+let eInBehaviorAllowDrag
+let eInOutputForegroundColor, eInOutputForegroundOpacity, eInOutputBackgroundColor, eInOutputBackgroundOpacity
+let settings
 
-function close() {
-    window.close();
-}
+
+/* ---- INIT ---- */
+window.addEventListener('DOMContentLoaded', () => {
+    eInUpdateCheck = get('update-check')
+    eInUpdateAutoinstall = get('update-autoinstall')
+    eInBehaviorAllowDrag = get('behavior-allow-drag')
+    eInOutputForegroundColor = get('output-foreground-color')
+    eInOutputBackgroundColor = get('output-background-color')
+    eInOutputForegroundOpacity = get('output-foreground-opacity')
+    eInOutputBackgroundOpacity = get('output-background-opacity')
+    
+    handle(eInUpdateCheck, 'change', () => setEnabled(eInUpdateAutoinstall, eInUpdateCheck.checked))
+    setupColorInput(eInOutputForegroundColor)
+    setupColorInput(eInOutputBackgroundColor)
+    setupRangeInput(eInOutputForegroundOpacity)
+    setupRangeInput(eInOutputBackgroundOpacity)
+    handle(get('save'), 'click', save)
+    handle(get('cancel'), 'click', cancel)
+
+    readFromStorage()
+})
+
+
+/* ---- HANDLER & UTILITY FUNCTIONS ---- */
+const get = (id) => document.getElementById(id)
+const handle = (element, event, listener) => element.addEventListener(event, listener)
 
 function save() {
-    readFromInterface();
-    writeToStorage();
-    close();
+    readFromInterface()
+    writeToStorage()
+    cancel()
 }
 
-function readFromStorage() {
-    ipcRenderer.invoke("read-settings").then((result) => {
-        settings = result;
-    });
+function cancel() {
+    window.close()
+}
+
+async function readFromStorage() {
+    settings = await ipcRenderer.invoke('settings:read')
+    writeToInterface()
 }
 
 function writeToStorage() {
-    ipcRenderer.send("write-settings", settings);
+    ipcRenderer.send('settings:write', settings)
 }
 
 function readFromInterface() {
-    settings.updateCheck = inputUpdateCheck.checked;
-    settings.updateAutoinstall = inputUpdateAutoinstall.checked;
-    settings.behaviorAllowDrag = inputBehaviorAllowDrag.checked;
-    settings.outputForegroundColor = inputOutputForegroundColor.value;
-    settings.outputBackgroundColor = inputOutputBackgroundColor.value;
-    settings.outputForegroundOpacity = parseInt(inputOutputForegroundOpacity.value);
-    settings.outputBackgroundOpacity = parseInt(inputOutputBackgroundOpacity.value);
+    settings.updateCheck = eInUpdateCheck.checked
+    settings.updateAutoinstall = eInUpdateAutoinstall.checked
+    settings.behaviorAllowDrag = eInBehaviorAllowDrag.checked
+    settings.outputForegroundColor = eInOutputForegroundColor.value
+    settings.outputBackgroundColor = eInOutputBackgroundColor.value
+    settings.outputForegroundOpacity = parseInt(eInOutputForegroundOpacity.value)
+    settings.outputBackgroundOpacity = parseInt(eInOutputBackgroundOpacity.value)
 }
 
 function writeToInterface() {
-    inputUpdateCheck.checked = settings.updateCheck;
-    inputUpdateAutoinstall.checked = settings.updateAutoinstall;
-    setEnabled(inputUpdateAutoinstall, settings.updateCheck);
-    inputBehaviorAllowDrag.checked = settings.behaviorAllowDrag;
-    inputOutputForegroundColor.value = settings.outputForegroundColor;
-    inputOutputBackgroundColor.value = settings.outputBackgroundColor;
-    inputOutputForegroundOpacity.value = settings.outputForegroundOpacity;
-    inputOutputBackgroundOpacity.value = settings.outputBackgroundOpacity;
-    updateInputValueStyle(inputOutputForegroundColor.parentNode, inputOutputForegroundColor.value);
-    updateInputValueStyle(inputOutputBackgroundColor.parentNode, inputOutputBackgroundColor.value);
-    updateInputValueStyle(inputOutputForegroundOpacity.parentNode, inputOutputForegroundOpacity.value + "%");
-    updateInputValueStyle(inputOutputBackgroundOpacity.parentNode, inputOutputBackgroundOpacity.value + "%");
+    eInUpdateCheck.checked = settings.updateCheck
+    eInUpdateAutoinstall.checked = settings.updateAutoinstall
+    setEnabled(eInUpdateAutoinstall, settings.updateCheck)
+    eInBehaviorAllowDrag.checked = settings.behaviorAllowDrag
+    eInOutputForegroundColor.value = settings.outputForegroundColor
+    eInOutputBackgroundColor.value = settings.outputBackgroundColor
+    eInOutputForegroundOpacity.value = settings.outputForegroundOpacity
+    eInOutputBackgroundOpacity.value = settings.outputBackgroundOpacity
+    updateInputValueStyle(eInOutputForegroundColor.parentNode, eInOutputForegroundColor.value)
+    updateInputValueStyle(eInOutputBackgroundColor.parentNode, eInOutputBackgroundColor.value)
+    updateInputValueStyle(eInOutputForegroundOpacity.parentNode, eInOutputForegroundOpacity.value + '%')
+    updateInputValueStyle(eInOutputBackgroundOpacity.parentNode, eInOutputBackgroundOpacity.value + '%')
 }
 
 function setEnabled(element, enabled) {
-    element.disabled = !enabled;
+    element.disabled = !enabled
 }
 
 function updateInputValueStyle(element, value) {
-    element.style.setProperty("--value", value);
-    element.style.setProperty("--value-string", JSON.stringify(value));
+    element.style.setProperty('--value', value)
+    element.style.setProperty('--value-string', JSON.stringify(value))
 }
 
 function setupColorInput(element) {
-    console.log(element);
-    element.addEventListener("input", () => updateInputValueStyle(element.parentNode, element.value));
+    handle(element, 'input', () => updateInputValueStyle(element.parentNode, element.value))
 }
 
 function setupRangeInput(element) {
-    element.addEventListener("input", () => updateInputValueStyle(element.parentNode, element.value + "%"));
+    handle(element, 'input', () => updateInputValueStyle(element.parentNode, element.value + '%'))
 }
-
-window.addEventListener("DOMContentLoaded", () => {
-    //get input elements
-    inputUpdateCheck = document.getElementById("update-check");
-    inputUpdateAutoinstall = document.getElementById("update-autoinstall");
-    inputBehaviorAllowDrag = document.getElementById("behavior-allow-drag");
-    inputOutputForegroundColor = document.getElementById("output-foreground-color");
-    inputOutputBackgroundColor = document.getElementById("output-background-color");
-    inputOutputForegroundOpacity = document.getElementById("output-foreground-opacity");
-    inputOutputBackgroundOpacity = document.getElementById("output-background-opacity");
-    //write values from storage
-    writeToInterface();
-    //set up input events
-    inputUpdateCheck.addEventListener("change", () => setEnabled(inputUpdateAutoinstall, inputUpdateCheck.checked));
-    setupColorInput(inputOutputForegroundColor);
-    setupColorInput(inputOutputBackgroundColor);
-    setupRangeInput(inputOutputForegroundOpacity);
-    setupRangeInput(inputOutputBackgroundOpacity);
-    document.getElementById("save").addEventListener("click", save);
-    document.getElementById("cancel").addEventListener("click", close);
-});
