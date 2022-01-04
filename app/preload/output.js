@@ -1,38 +1,52 @@
-const { ipcRenderer } = require("electron");
-const katex = require("katex");
+/* ---- MODULES ---- */
+const { ipcRenderer } = require('electron')
+const katex = require('katex')
 
-let output, background;
 
-ipcRenderer.on("tex", (event, args) => {
+/* ---- VARS ---- */
+let eOutput, eBackground
+
+
+/* ---- IPC ---- */
+ipcRenderer.on('tex', (event, args) => updateTex(args))
+ipcRenderer.on('update-settings', (event, args) => applySettings(args))
+
+
+/* ---- INIT ---- */
+window.addEventListener('DOMContentLoaded', () => {
+    eOutput = get('tex-output')
+    eBackground = get('background')
+    new ResizeObserver(sizeChanged).observe(eOutput)
+    ipcRenderer.send('output:ready')
+})
+
+
+/* ---- HANDLER & UTILITY FUNCTIONS ---- */
+const get = (id) => document.getElementById(id)
+
+function updateTex(tex) {
     katex.render(
-        args,
-        output,
+        tex,
+        eOutput,
         {
             displayMode: true,
-            output: "html",
+            output: 'html',
             throwOnError: false,
-            strict: "ignore"
+            strict: 'ignore'
         }
-    );
-});
-
-ipcRenderer.on("update-settings", (event, args) => {
-    output.style.color = args.outputForegroundColor;
-    output.style.opacity = args.outputForegroundOpacity / 100;
-    background.style.backgroundColor = args.outputBackgroundColor;
-    background.style.opacity = args.outputBackgroundOpacity / 100;
-});
-
-function sizeChanged() {
-    ipcRenderer.send("size", {
-        width: output.offsetWidth,
-        height: output.offsetHeight
-    });
+    )
 }
 
-window.addEventListener("DOMContentLoaded", () => {
-    output = document.getElementById("tex-output");
-    background = document.getElementById("background");
-    new ResizeObserver(sizeChanged).observe(output);
-    ipcRenderer.send("output-get-settings");
-});
+function sizeChanged() {
+    ipcRenderer.send('output:size', {
+        width: eOutput.offsetWidth,
+        height: eOutput.offsetHeight
+    })
+}
+
+function applySettings(settings) {
+    eOutput.style.color = settings.outputForegroundColor
+    eOutput.style.opacity = settings.outputForegroundOpacity / 100
+    eBackground.style.backgroundColor = settings.outputBackgroundColor
+    eBackground.style.opacity = settings.outputBackgroundOpacity / 100
+}
