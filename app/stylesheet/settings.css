@@ -272,6 +272,11 @@ label.input.table > div.tbody {
 }
 
 label.input.table tr.selected {
+    --color: black;
+    background-color: var(--blue-xlight);
+}
+
+label.input.table tr.selected:focus-within {
     --color: white;
     background-color: var(--blue-light);
 }
