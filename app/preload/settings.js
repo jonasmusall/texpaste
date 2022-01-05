@@ -141,7 +141,7 @@ function selectMacro(index) {
     if (selectedMacroIndex != -1) {
         eMacroTable.rows[selectedMacroIndex].classList.remove('selected')
     }
-    selectedMacroIndex = index;
+    selectedMacroIndex = index
     eMacroTable.rows[selectedMacroIndex].classList.add('selected')
     updateMacroTableTabIndices(MACRO_TABLE_TAB_INDEX)
 }

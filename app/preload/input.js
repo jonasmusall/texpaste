@@ -56,7 +56,7 @@ function updateTex() {
             strict: 'ignore',
             macros: macros
         }
-    );
+    )
 }
 
 function handleInputKeyUp(event) {
