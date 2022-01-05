@@ -123,7 +123,12 @@ function setupMacroTable() {
     handle(eInBehaviorMacroRemove, 'click', removeSelectedMacro)
 }
 
-function updateMacroTableTabIndices(tableTabIndex) {
+function selectMacro(index) {
+    if (selectedMacroIndex != -1) {
+        eMacroTable.rows[selectedMacroIndex].classList.remove('selected')
+    }
+    selectedMacroIndex = index
+    eMacroTable.rows[selectedMacroIndex].classList.add('selected')
     Array.from(eMacroTable.rows).forEach(row => {
         if (!row.classList.contains('selected')) {
             Array.from(row.cells).forEach(cell => {
@@ -131,19 +136,10 @@ function updateMacroTableTabIndices(tableTabIndex) {
             })
         } else {
             Array.from(row.cells).forEach(cell => {
-                cell.children[0].tabIndex = tableTabIndex
+                cell.children[0].tabIndex = MACRO_TABLE_TAB_INDEX
             })
         }
     })
-}
-
-function selectMacro(index) {
-    if (selectedMacroIndex != -1) {
-        eMacroTable.rows[selectedMacroIndex].classList.remove('selected')
-    }
-    selectedMacroIndex = index
-    eMacroTable.rows[selectedMacroIndex].classList.add('selected')
-    updateMacroTableTabIndices(MACRO_TABLE_TAB_INDEX)
 }
 
 function handleMacroInputKeyEvent(event, cellIndex) {
