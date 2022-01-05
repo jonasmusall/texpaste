@@ -89,7 +89,7 @@ function createSettingsWindow() {
         isSettingsWindowOpen = true
         const winSettings = new BrowserWindow({
             width: 300,
-            height: 400,
+            height: 550,
             resizable: false,
             minimizable: false,
             maximizable: false,
@@ -181,6 +181,10 @@ function initStore() {
             behaviorAllowDrag: {
                 type: 'boolean',
                 default: false
+            },
+            behaviorMacros: {
+                type: "object",
+                default: {}
             },
             outputForegroundColor: {
                 type: 'string',

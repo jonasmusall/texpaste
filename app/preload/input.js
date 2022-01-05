@@ -7,6 +7,7 @@ const katex = require('katex')
 /* ---- VARS ---- */
 let eInput, eOutput
 let nextVersion
+let macros = {}
 
 
 /* ---- IPC ---- */
@@ -52,7 +53,8 @@ function updateTex() {
             displayMode: true,
             output: 'html',
             throwOnError: false,
-            strict: 'ignore'
+            strict: 'ignore',
+            macros: macros
         }
     )
 }
@@ -71,6 +73,8 @@ function applySettings(settings) {
     } else {
         document.body.classList.remove('draggable')
     }
+    macros = settings.behaviorMacros
+    updateTex()
 }
 
 function handleUpdateAvailable(version) {
