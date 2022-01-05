@@ -74,6 +74,7 @@ function applySettings(settings) {
         document.body.classList.remove('draggable')
     }
     macros = settings.behaviorMacros
+    updateTex()
 }
 
 function handleUpdateAvailable(version) {
