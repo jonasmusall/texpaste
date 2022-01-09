@@ -27,6 +27,7 @@ window.addEventListener('DOMContentLoaded', () => {
     handle(get('settings'), 'click', () => ipcRenderer.send('input:open-settings'))
     handle(get('banner-yes'), 'click', installUpdate)
     handle(get('banner-skip'), 'click', skipUpdate)
+    handle(window, 'focus', () => eInput.focus())
     
     ipcRenderer.send('input:ready')
 })
