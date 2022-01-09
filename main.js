@@ -2,7 +2,7 @@ console.time('startup')
 console.time('show')
 /* ---- MODULES ---- */
 const Deferred = require('./lib/deferred')
-const { app, BrowserWindow, ipcMain, clipboard } = require('electron')
+const { app, BrowserWindow, ipcMain, clipboard, shell } = require('electron')
 const path = require('path')
 const updaterDf = new Deferred()
 const semverDf = new Deferred()
@@ -18,6 +18,9 @@ let isSettingsWindowOpen = false
 
 
 /* ---- IPC ---- */
+ipcMain.handle('get-version', app.getVersion)
+ipcMain.on('open-repos', () => shell.openExternal('https://github.com/jonasmusall/texpaste'))
+
 ipcMain.on('input:ready', () => {
     console.log('Resolving winIn')
     winInDf.resolve(winIn)
@@ -89,7 +92,7 @@ function createSettingsWindow() {
         isSettingsWindowOpen = true
         const winSettings = new BrowserWindow({
             width: 300,
-            height: 550,
+            height: 566,
             resizable: false,
             minimizable: false,
             maximizable: false,

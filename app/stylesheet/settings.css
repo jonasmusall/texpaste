@@ -27,6 +27,10 @@ span.monospace {
     font-family: monospace;
 }
 
+#version {
+    cursor: pointer;
+}
+
 /* ---- MUTUAL INPUT STYLES ---- */
 
 label.input {

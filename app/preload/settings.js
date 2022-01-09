@@ -13,7 +13,7 @@ let settings
 
 
 /* ---- INIT ---- */
-window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', async () => {
     eInUpdateCheck = get('update-check')
     eInUpdateAutoinstall = get('update-autoinstall')
     eInBehaviorAllowDrag = get('behavior-allow-drag')
@@ -32,6 +32,9 @@ window.addEventListener('DOMContentLoaded', () => {
     handle(get('cancel'), 'click', cancel)
 
     readFromStorage()
+    eVersion = get('version')
+    eVersion.innerHTML = await ipcRenderer.invoke('get-version')
+    handle(eVersion, 'click', () => ipcRenderer.send('open-repos'))
 })
 
 
