@@ -44,9 +44,9 @@ ipcMain.on('settings:write', (event, args) => updateSettings(args))
 app.whenReady().then(() => {
     createInputWindow()
     createOutputWindow()
-    // call afterFrontEndReady some time after input window is (hopefully) done
-    setTimeout(afterFrontEndReady, 300)
 })
+// call afterFrontEndReady after input window is definitely done
+winInDf.promise.then(() => setTimeout(afterFrontEndReady, 100))
 
 
 /* ---- WINDOW FUNCTIONS ---- */
