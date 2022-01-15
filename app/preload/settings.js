@@ -32,9 +32,8 @@ handle(window, 'DOMContentLoaded', async () => {
     handle(get('cancel'), 'click', cancel);
 
     readFromStorage();
-    eVersion = get('version');
-    eVersion.innerHTML = await ipcRenderer.invoke('get-version');
-    handle(eVersion, 'click', () => ipcRenderer.send('open-repos'));
+    get('version').innerHTML = await ipcRenderer.invoke('get-version');
+    handle(get('github-icon'), 'click', () => ipcRenderer.send('open-repos'));
 });
 
 
