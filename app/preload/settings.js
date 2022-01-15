@@ -13,7 +13,7 @@ let settings;
 
 
 /* ---- INIT ---- */
-window.addEventListener('DOMContentLoaded', async () => {
+handle(window, 'DOMContentLoaded', async () => {
     eInUpdateCheck = get('update-check');
     eInUpdateAutoinstall = get('update-autoinstall');
     eInBehaviorAllowDrag = get('behavior-allow-drag');
@@ -39,8 +39,8 @@ window.addEventListener('DOMContentLoaded', async () => {
 
 
 /* ---- HANDLER & UTILITY FUNCTIONS ---- */
-const get = (id) => document.getElementById(id);
-const handle = (element, event, listener) => element.addEventListener(event, listener);
+function get(id) { return document.getElementById(id); }
+function handle(element, event, listener) { element.addEventListener(event, listener); }
 
 function save() {
     readFromInterface();

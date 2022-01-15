@@ -13,7 +13,7 @@ ipcRenderer.on('update-settings', (event, args) => applySettings(args));
 
 
 /* ---- INIT ---- */
-window.addEventListener('DOMContentLoaded', () => {
+handle(window, 'DOMContentLoaded', () => {
     eOutput = get('tex-output');
     eBackground = get('background');
     new ResizeObserver(sizeChanged).observe(eOutput);
@@ -22,7 +22,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
 /* ---- HANDLER & UTILITY FUNCTIONS ---- */
-const get = (id) => document.getElementById(id);
+function get(id) { return document.getElementById(id); }
+function handle(element, event, listener) { element.addEventListener(event, listener); }
 
 function updateTex(tex) {
     katex.render(

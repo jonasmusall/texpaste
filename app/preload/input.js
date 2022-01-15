@@ -16,9 +16,9 @@ ipcRenderer.on('update-notify', (event, args) => handleUpdateAvailable(args.next
 
 
 /* ---- INIT ---- */
-window.addEventListener('DOMContentLoaded', () => {
-    eInput = document.getElementById('tex-input');
-    eOutput = document.getElementById('tex-output');
+handle(window, 'DOMContentLoaded', () => {
+    eInput = get('tex-input');
+    eOutput = get('tex-output');
 
     handle(eInput, 'input', updateTex);
     handle(eInput, 'keyup', handleInputKeyUp);
@@ -34,8 +34,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
 /* ---- HANDLER & UTILITY FUNCTIONS ---- */
-const get = (id) => document.getElementById(id);
-const handle = (element, event, listener) => element.addEventListener(event, listener);
+function get(id) { return document.getElementById(id); }
+function handle(element, event, listener) { element.addEventListener(event, listener); }
 
 function accept() {
     ipcRenderer.send('input:accept');
