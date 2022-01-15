@@ -41,6 +41,7 @@ handle(window, 'DOMContentLoaded', async () => {
 /* ---- HANDLER & UTILITY FUNCTIONS ---- */
 function get(id) { return document.getElementById(id); }
 function handle(element, event, listener) { element.addEventListener(event, listener); }
+function map(collection, func) { Array.from(collection).forEach(func); }
 
 function save() {
     readFromInterface();
@@ -66,7 +67,7 @@ function readFromInterface() {
     settings.updateAutoinstall = eInUpdateAutoinstall.checked;
     settings.behaviorAllowDrag = eInBehaviorAllowDrag.checked;
     settings.behaviorMacros = {};
-    Array.from(eMacroTable.rows).forEach(row => {
+    map(eMacroTable.rows, row => {
         let name = row.cells[0].children[0].value;
         let def = row.cells[1].children[0].value;
         if (name.length > 0 && def.length > 0) {
@@ -132,13 +133,13 @@ function selectMacro(index) {
     }
     selectedMacroIndex = index;
     eMacroTable.rows[selectedMacroIndex].classList.add('selected');
-    Array.from(eMacroTable.rows).forEach(row => {
+    map(eMacroTable.rows, row => {
         if (!row.classList.contains('selected')) {
-            Array.from(row.cells).forEach(cell => {
+            map(row.cells, cell => {
                 cell.children[0].tabIndex = -1;
             });
         } else {
-            Array.from(row.cells).forEach(cell => {
+            map(row.cells, cell => {
                 cell.children[0].tabIndex = MACRO_TABLE_TAB_INDEX;
             });
         }
