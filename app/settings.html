@@ -12,19 +12,19 @@
     <body class="flex">
         <h1>Updates</h1>
         <p>v<span id="version"></span></p>
-        <label class="input checkbox">
+        <label class="item checkbox">
             <input type="checkbox" id="update-check" tabindex="0"><div></div><span>Check for updates</span>
         </label>
-        <label class="input checkbox">
+        <label class="item checkbox">
             <input type="checkbox" id="update-autoinstall" tabindex="1"><div></div><span>Install updates automatically</span>
         </label>
         <h1>Behavior</h1>
-        <label class="input checkbox">
+        <label class="item checkbox">
             <input type="checkbox" id="behavior-allow-drag" tabindex="2"><div></div><span>Make window draggable (disables the hover effect)</span>
         </label>
         <h1>Macros</h1>
         <p>Use e.g. <span class="monospace">#1</span> in definition for first macro arg.</p>
-        <label class="input table">
+        <div class="item table">
             <table>
                 <tr>
                     <th>Name</th>
@@ -36,21 +36,21 @@
                 <table id="macro-table">
                 </table>
             </div>
-        </label>
-        <div class="flex row">
+        </div>
+        <div class="item">
             <button id="macro-new" tabindex="4">New</button><button id="macro-remove" tabindex="5" disabled>Remove</button>
         </div>
         <h1>Output</h1>
-        <label class="input color">
+        <label class="item color">
             <input type="color" id="output-foreground-color" tabindex="6"><span>Foreground color:</span><div></div>
         </label>
-        <label class="indented input range label-before output-after">
+        <label class="item indented range">
             <input type="range" id="output-foreground-opacity" min="0" max="100" step="1" tabindex="7"><output></output><span>Opacity:</span>
         </label>
-        <label class="input color">
+        <label class="item color">
             <input type="color" id="output-background-color" tabindex="8"><span>Background color:</span><div></div>
         </label>
-        <label class="indented input range label-before output-after">
+        <label class="item indented range">
             <input type="range" id="output-background-opacity" min="0" max="100" step="1" tabindex="9"><output></output><span>Opacity:</span>
         </label>
         <div class="flex row justify-end align-end">

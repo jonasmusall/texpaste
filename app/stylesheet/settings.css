@@ -5,25 +5,20 @@ html {
 }
 
 body {
+    margin: 0px;
     box-sizing: border-box;
     height: 100%;
-    margin: 0px;
     padding: 8px;
     font: 14px sans-serif;
     cursor: default;
     user-select: none;
 }
 
-h1 {
-    font-size: 14px;
-    margin: 8px 0px 6px 0px;
+body > :first-child {
+    margin-top: 0px;
 }
 
-p {
-    margin: 0px 0px 6px 0px;
-}
-
-span.monospace {
+.monospace {
     font-family: monospace;
 }
 
@@ -31,62 +26,72 @@ span.monospace {
     cursor: pointer;
 }
 
-/* ---- MUTUAL INPUT STYLES ---- */
+h1 {
+    margin: 8px 0px 6px 0px;
+    font-size: 14px;
+}
 
-label.input {
+p {
+    margin: 0px 0px 6px 0px;
+}
+
+.item {
     --spacing: 8px;
     display: flex;
+    margin-bottom: 6px;
     width: max-content;
     max-width: 100%;
     min-height: 18px;
-    margin-bottom: 6px;
     flex-direction: row;
     align-items: center;
     user-select: none;
 }
 
-label.input.indented {
+.item.indented {
     margin-left: 16px;
 }
 
-label.input > input {
+.item > :not(input) + :not(input) {
+    margin-left: var(--spacing);
+}
+
+label > input {
+    margin: 0px;
     width: 0px;
     height: 0px;
-    margin: 0px;
     padding: 0px;
     border: none;
     outline: none;
     opacity: 0;
 }
 
-label.input > :not(input) + :not(input){
-    margin-left: var(--spacing);
+label > span {
+    transition: color var(--duration-xshort) ease;
 }
 
-label.input > input:hover ~ div {
+label > input:hover ~ div {
     box-shadow: 0px 0px 0px 3px var(--shadow);
 }
 
-label.input > input:focus {
+label > input:focus {
     outline: none;
 }
 
-label.input > input:focus ~ div {
+label > input:focus ~ div {
     border-color: var(--blue-light);
     box-shadow: 0px 0px 0px 3px var(--blue-transp);
 }
 
-label.input > input:disabled:hover ~ div {
-    box-shadow: none;
-}
-
-label.input > input:disabled ~ span {
+label > input:disabled ~ span {
     color: var(--gray);
 }
 
-/* ---- CHECKBOX INPUT ---- */
+label > input:disabled:hover ~ div {
+    box-shadow: none;
+}
 
-label.input.checkbox > div {
+/* ---- CHECKBOX ---- */
+label.checkbox > div {
     display: inline-block;
     width: 12px;
     height: 12px;
@@ -97,46 +102,41 @@ label.input.checkbox > div {
     transition-duration: var(--duration-xshort);
 }
 
-label.input.checkbox > div::after {
-    content: "";
+label.checkbox > div::after {
     display: block;
     width: 12px;
     height: 12px;
+    content: "";
     background-image: url(../../assets/icons/check_white.svg);
     background-size: 12px 12px;
 }
 
-label.input.checkbox > span {
-    transition: color var(--duration-xshort) ease;
-}
-
-label.input.checkbox > input:checked ~ div {
+label.checkbox > input:checked ~ div {
     background-color: var(--blue-light);
     border-color: var(--blue-light);
 }
 
-label.input.checkbox > input:disabled ~ div {
+label.checkbox > input:disabled ~ div {
     border-color: var(--gray-xlight);
 }
 
-label.input.checkbox > input:disabled:checked ~ div {
+label.checkbox > input:disabled:checked ~ div {
     background-color: var(--gray-light);
     border-color: var(--gray-light);
 }
 
-/* ---- COLOR INPUT ---- */
-
-label.input.color {
+/* ---- COLOR ---- */
+label.color {
     --value: #000000;
     --value-string: "#000000";
 }
 
-label.input.color > input {
+label.color > input {
     order: 2;
     transform: translateX(-9px);
 }
 
-label.input.color > div {
+label.color > div {
     order: 1;
     display: inline-block;
     width: 16px;
@@ -149,28 +149,27 @@ label.input.color > div {
     transition-duration: var(--duration-xshort);
 }
 
-label.input.color > span {
+label.color > span {
     order: 0;
 }
 
-label.input.color > div + span {
+label.color > div + span {
     order: 3;
 }
 
-label.input.color > input:active ~ div {
+label.color > input:active ~ div {
     border-color: var(--blue-light);
     box-shadow: 0px 0px 0px 3px var(--blue-transp);
 }
 
-/* -------- RANGE INPUT -------- */
-
-label.input.range {
+/* -------- RANGE -------- */
+label.range {
     --value: 50%;
     --value-string: "50%";
     --spacing: 15px;
 }
 
-label.input.range > input {
+label.range > input {
     order: 2;
     -webkit-appearance: none;
     width: 140px;
@@ -183,12 +182,12 @@ label.input.range > input {
     opacity: 1;
 }
 
-label.input.range > input::-webkit-slider-runnable-track {
-    -webkit-appearance: none;
+label.range > input::-webkit-slider-runnable-track {
     margin: -7px;
+    -webkit-appearance: none;
 }
 
-label.input.range > input::-webkit-slider-thumb {
+label.range > input::-webkit-slider-thumb {
     -webkit-appearance: none;
     box-sizing: border-box;
     width: 18px;
@@ -201,37 +200,32 @@ label.input.range > input::-webkit-slider-thumb {
     transition-duration: var(--duration-xshort);
 }
 
-label.input.range > span {
-    order: 4;
-}
-
-label.input.range.label-before > span {
+label.range > span {
     order: 0;
     margin-left: 0px;
     margin-right: var(--spacing);
 }
 
-label.input.range.output-after > output {
+label.range > output {
     order: 3;
     margin-left: var(--spacing);
 }
 
-label.input.range.output-after > output::after {
+label.range > output::after {
     content: var(--value-string);
 }
 
-label.input.range > input:hover::-webkit-slider-thumb {
+label.range > input:hover::-webkit-slider-thumb {
     box-shadow: 0px 0px 0px 3px var(--shadow);
 }
 
-label.input.range > input:focus::-webkit-slider-thumb {
+label.range > input:focus::-webkit-slider-thumb {
     border-color: var(--blue-light);
     box-shadow: 0px 0px 0px 3px var(--blue-transp);
 }
 
-/* -------- TABLE -------- */
-
-label.input.table {
+/* ---- TABLE ---- */
+.table {
     --spacing: 0px;
     display: block;
     box-sizing: border-box;
@@ -240,71 +234,71 @@ label.input.table {
     border-radius: 4px;
 }
 
-label.input.table table {
+.table table {
     --color: black;
     width: 100%;
-    background-color: white;
     border-collapse: collapse;
+    background-color: white;
 }
 
-label.input.table th, label.input.table td {
-    box-sizing: border-box;
-    font-weight: normal;
-    text-align: start;
-    padding: 1px 0px 1px 3px;
-}
-
-label.input.table th:first-of-type, label.input.table td:first-of-type {
+.table th:first-of-type, .table td:first-of-type {
     width: 70px;
 }
 
-label.input.table th {
-    border-bottom: 1px solid var(--gray-light);
+.table th {
+    box-sizing: border-box;
+    padding: 1px 0px 1px 3px;
+    text-align: start;
     background-color: var(--gray-xxlight);
+    font-weight: normal;
+    border-bottom: 1px solid var(--gray-light);
     border-radius: 0px 3px 0px 0px;
 }
 
-label.input.table th:first-of-type {
+.table th:first-of-type {
     border-right: 1px solid var(--gray-light);
     border-radius: 3px 0px 0px 0px;
 }
 
-label.input.table > div.tbody {
+.table > div.tbody {
     min-height: 90px;
     max-height: 90px;
     overflow: auto;
 }
 
-label.input.table tr.selected {
+.table tr.selected {
     --color: black;
     background-color: var(--blue-xlight);
 }
 
-label.input.table tr.selected:focus-within {
+.table tr.selected:focus-within {
     --color: white;
     background-color: var(--blue-light);
 }
 
-label.input.table td > input {
+.table td {
+    padding: 0px;
+}
+
+.table td > input {
     box-sizing: border-box;
     width: 100%;
-    margin: 0px 0px 1px 0px;
-    padding: 0px;
+    padding: 1px 0px 1px 3px;
+    background-color: transparent;
+    color: var(--color);
+    font: 14px monospace;
     outline: none;
     border: none;
-    background-color: transparent;
-    font: 14px monospace;
-    color: var(--color);
 }
 
-label.input.table td > input::selection {
+.table td > input::selection {
+    background-color: white;
     color: black;
-    background: white;
 }
 
-label.input.table > div.tbody > div.empty {
+.table > div.tbody > div.empty {
     position: absolute;
-    padding: 2px 0px 2px 3px;
     z-index: -1;
+    padding: 2px 0px 2px 3px;
     color: var(--gray-light);
 }
