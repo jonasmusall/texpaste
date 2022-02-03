@@ -155,7 +155,10 @@ async function initUpdater() {
 
 async function checkForUpdates() {
     if ((await storeDf.promise).get('updateCheck')) {
-        (await updaterDf.promise).checkForUpdates();
+        (await updaterDf.promise).checkForUpdates().catch(reason => {
+            console.log('Update check failed. Reason:');
+            console.log(reason);
+        });
     }
 }
 
