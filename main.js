@@ -145,7 +145,7 @@ async function initUpdater() {
         const store = await storeDf.promise;
         if ((await semverDf.promise).gt(info.version, store.get('updateSkipVersion'))) {
             if (store.get('updateAutoinstall')) {
-                autoUpdater.downloadUpdate();
+                (await updaterDf.promise).downloadUpdate();
             } else {
                 (await winInDf.promise).webContents.send('update-notify', { nextVersion: info.version });
             }
