@@ -13,7 +13,8 @@
     "postinstall": "electron-builder install-app-deps",
     "start": "electron .",
     "pack": "electron-builder --dir",
-    "dist": "electron-builder",
+    "dist": "electron-builder -p never",
+    "dist-wl": "electron-builder -wl -p never",
     "publish": "electron-builder -p always"
   },
   "devDependencies": {
@@ -28,13 +29,19 @@
   },
   "build": {
     "appId": "jonasmusall.texpaste",
+    "artifactName": "${productName}_${version}_${os}.${ext}",
     "win": {
-      "target": "nsis"
+      "target": ["nsis", "portable", "zip"]
+    },
+    "linux": {
+      "target": ["AppImage", "deb", "tar.gz"],
+      "maintainer": "Jonas Musall"
     },
     "nsis": {
       "oneClick": true,
       "perMachine": false,
-      "createDesktopShortcut": false
+      "createDesktopShortcut": false,
+      "artifactName": "${productName}_${version}_setup_${os}.${ext}"
     }
   }
 }

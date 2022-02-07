@@ -1,0 +1,63 @@
+name: Build executables and create release
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*.*.*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build executables and create release
+    runs-on: ubuntu-latest
+    container: electronuserland/builder:wine
+    env:
+      # if file list is changed, also update .github/scripts/generate_checksums.sh
+      RELEASE_ASSETS: |
+        dist/*.exe
+        dist/*.blockmap
+        dist/*.zip
+        dist/*.AppImage
+        dist/*.deb
+        dist/*.tar.gz
+        dist/latest.yml
+        dist/latest-linux.yml
+        dist/SHA512CHECKSUMS.txt
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install node dependencies
+        run: npm install
+      - name: Take container home folder ownership
+        # necessary to get Wine to work
+        run: chown root:root /github/home
+      - name: Build
+        run: npm run dist-wl
+      - name: List created files
+        run: ls -la dist
+      - name: Generate checksums
+        run: bash .github/scripts/generate_checksums.sh
+      - name: Create release and upload assets
+        id: upload_initial
+        continue-on-error: true
+        uses: softprops/action-gh-release@v1
+        with:
+          draft: true
+          files: ${{ env.RELEASE_ASSETS }}
+      # backup steps
+      - name: Create release and upload assets (retry)
+        id: upload_retry
+        continue-on-error: true
+        if: steps.upload_initial.outcome == 'failure'
+        uses: softprops/action-gh-release@v1
+        with:
+          draft: true
+          files: ${{ env.RELEASE_ASSETS }}
+      - name: Upload workflow artifacts as backup
+        if: steps.upload_retry.outcome == 'failure'
+        uses: actions/upload-artifact@v2
+        with:
+          path: ${{ env.RELEASE_ASSETS }}
