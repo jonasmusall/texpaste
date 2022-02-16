@@ -14,6 +14,8 @@
     "start": "electron .",
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
+    "build-win-nsis": "electron-builder -w nsis -p never -c.extraMetadata.selfUpdate=true",
+    "build-win-zip": "electron-builder -w zip -p never -c.extraMetadata.selfUpdate=false",
     "publish": "electron-builder -p always"
   },
   "devDependencies": {
@@ -35,7 +37,11 @@
       "oneClick": true,
       "perMachine": false,
       "createDesktopShortcut": false
-    }
+    },
+    "extraResources": [{
+      "from": "build/app-update.yml",
+      "to": "app-update.yml"
+    }]
   },
   "selfUpdate": "false"
 }
