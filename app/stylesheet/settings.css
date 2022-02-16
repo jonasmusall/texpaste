@@ -72,7 +72,7 @@ label > span {
     transition: color var(--duration-xshort) ease;
 }
 
-label > input:hover ~ div {
+label > input:hover ~ div.input {
     box-shadow: 0px 0px 0px 3px var(--shadow);
 }
 
@@ -80,7 +80,7 @@ label > input:focus {
     outline: none;
 }
 
-label > input:focus ~ div {
+label > input:focus ~ div.input {
     border-color: var(--blue-light);
     box-shadow: 0px 0px 0px 3px var(--blue-transp);
 }
@@ -89,12 +89,45 @@ label > input:disabled ~ span {
     color: var(--gray);
 }
 
-label > input:disabled:hover ~ div {
+label > input:disabled:hover ~ div.input {
     box-shadow: none;
 }
 
+/* ---- ANNOTATION ---- */
+div.annotation {
+    position: absolute;
+    margin: 0px !important;
+    width: 0px;
+    height: 0px;
+    overflow: visible;
+}
+
+div.annotation.hidden {
+    display: none;
+}
+
+div.annotation > span {
+    position: relative;
+    top: 12px;
+    left: 8px;
+    display: inline-block;
+    width: 200px;
+    padding: 4px;
+    background-color: var(--gray-dark);
+    color: white;
+    border: 1px solid var(--gray-xdark);
+    border-radius: 0px 6px 6px 6px;
+    opacity: 0;
+    transition: opacity var(--duration-xshort) ease;
+    pointer-events: none;
+}
+
+label > input:hover ~ div.annotation > span {
+    opacity: 1;
+}
+
 /* ---- CHECKBOX ---- */
-label.checkbox > div {
+label.checkbox > div.input {
     display: inline-block;
     width: 12px;
     height: 12px;
@@ -105,7 +138,7 @@ label.checkbox > div {
     transition-duration: var(--duration-xshort);
 }
 
-label.checkbox > div::after {
+label.checkbox > div.input::after {
     display: block;
     width: 12px;
     height: 12px;
@@ -114,16 +147,16 @@ label.checkbox > div::after {
     background-size: 12px 12px;
 }
 
-label.checkbox > input:checked ~ div {
+label.checkbox > input:checked ~ div.input {
     background-color: var(--blue-light);
     border-color: var(--blue-light);
 }
 
-label.checkbox > input:disabled ~ div {
+label.checkbox > input:disabled ~ div.input {
     border-color: var(--gray-xlight);
 }
 
-label.checkbox > input:disabled:checked ~ div {
+label.checkbox > input:disabled:checked ~ div.input {
     background-color: var(--gray-light);
     border-color: var(--gray-light);
 }
@@ -139,7 +172,7 @@ label.color > input {
     transform: translateX(-9px);
 }
 
-label.color > div {
+label.color > div.input {
     order: 1;
     display: inline-block;
     width: 16px;
@@ -156,11 +189,11 @@ label.color > span {
     order: 0;
 }
 
-label.color > div + span {
+label.color > div.input + span {
     order: 3;
 }
 
-label.color > input:active ~ div {
+label.color > input:active ~ div.input {
     border-color: var(--blue-light);
     box-shadow: 0px 0px 0px 3px var(--blue-transp);
 }
