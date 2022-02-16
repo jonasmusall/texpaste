@@ -13,6 +13,7 @@ let winIn, winOut;
 const winInDf = new Deferred();
 const winOutDf = new Deferred();
 const storeDf = new Deferred();
+let selfUpdate = false;
 let imgOut = null;
 let isSettingsWindowOpen = false;
 
@@ -20,6 +21,7 @@ let isSettingsWindowOpen = false;
 /* ---- IPC ---- */
 ipcMain.handle('get-version', app.getVersion);
 ipcMain.on('open-repos', () => shell.openExternal('https://github.com/jonasmusall/texpaste'));
+ipcMain.on('open-release', (event, args) => shell.openExternal('https://github.com/jonasmusall/texpaste/releases/tag/v' + args));
 
 ipcMain.on('input:ready', () => {
     console.log('Resolving winIn');
@@ -39,12 +41,15 @@ ipcMain.on('output:ready', () => {
 });
 ipcMain.on('output:size', (event, args) => winOut.setSize(args.width + 60, args.height));
 
-ipcMain.handle('settings:read', async () => (await storeDf.promise).store);
+ipcMain.handle('settings:read', async () => { return { settings: ((await storeDf.promise).store), selfUpdate: selfUpdate }});
 ipcMain.on('settings:write', (event, args) => updateSettings(args));
 
 
 /* ---- APP STARTUP ---- */
 app.whenReady().then(() => {
+    if (require(path.join(__dirname, 'package.json')).selfUpdate === 'true') {
+        selfUpdate = true;
+    }
     createInputWindow();
     createOutputWindow();
 });
@@ -140,17 +145,8 @@ async function initUpdater() {
     const updater = await updaterDf.promise;
     updater.autoDownload = false;
     updater.autoInstallOnAppQuit = (await storeDf.promise).get('updateAutoinstall');
-    updater.removeAllListeners('update-available');
-    updater.addListener('update-available', async (info) => {
-        const store = await storeDf.promise;
-        if ((await semverDf.promise).gt(info.version, store.get('updateSkipVersion'))) {
-            if (store.get('updateAutoinstall')) {
-                (await updaterDf.promise).downloadUpdate();
-            } else {
-                (await winInDf.promise).webContents.send('update-notify', { nextVersion: info.version });
-            }
-        }
-    });
+    updater.removeListener('update-available', handleUpdateAvailable);
+    updater.addListener('update-available', handleUpdateAvailable);
 }
 
 async function checkForUpdates() {
@@ -159,6 +155,17 @@ async function checkForUpdates() {
             console.log('Update check failed. Reason:');
             console.log(reason);
         });
+    }
+}
+
+async function handleUpdateAvailable(info) {
+    const store = await storeDf.promise;
+    if ((await semverDf.promise).gt(info.version, store.get('updateSkipVersion'))) {
+        if (selfUpdate && store.get('updateAutoinstall')) {
+            (await updaterDf.promise).downloadUpdate();
+        } else {
+            (await winInDf.promise).webContents.send('update-notify', { nextVersion: info.version, selfUpdate: selfUpdate });
+        }
     }
 }
 

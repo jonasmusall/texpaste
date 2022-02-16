@@ -7,12 +7,13 @@ const katex = require('katex');
 /* ---- VARS ---- */
 let eInput, eOutput;
 let nextVersion;
+let selfUpdate;
 let macros = {};
 
 
 /* ---- IPC ---- */
 ipcRenderer.on('settings', (event, args) => applySettings(args));
-ipcRenderer.on('update-notify', (event, args) => handleUpdateAvailable(args.nextVersion));
+ipcRenderer.on('update-notify', (event, args) => handleUpdateAvailable(args));
 
 
 /* ---- INIT ---- */
@@ -25,7 +26,7 @@ handle(window, 'DOMContentLoaded', () => {
     handle(get('accept'), 'click', accept);
     handle(get('cancel'), 'click', cancel);
     handle(get('settings'), 'click', () => ipcRenderer.send('input:open-settings'));
-    handle(get('banner-yes'), 'click', installUpdate);
+    handle(get('banner-confirm'), 'click', confirmUpdate);
     handle(get('banner-skip'), 'click', skipUpdate);
     handle(window, 'focus', () => eInput.focus());
     
@@ -78,27 +79,38 @@ function applySettings(settings) {
     updateTex();
 }
 
-function handleUpdateAvailable(version) {
-    nextVersion = version;
-    showUpdateBanner('A new version (' + nextVersion + ') is available, would you like to install it when closing the app?');
+function handleUpdateAvailable(args) {
+    nextVersion = args.nextVersion;
+    selfUpdate = args.selfUpdate;
+    if (selfUpdate) {
+        showUpdateBanner('A new version (v' + nextVersion + ') is available, would you like to install it when closing the app?', 'Yes');
+    } else {
+        showUpdateBanner('A new version (v' + nextVersion + ') is available, would you like to go to the downloads page for this release?', 'Open');
+    }
 }
 
-function showUpdateBanner(text) {
-    get('banner-text').innerHTML = text;
-    get('banner-yes').tabIndex = 0;
+function showUpdateBanner(bannerText, confirmText) {
+    get('banner-text').innerHTML = bannerText;
+    const eBannerConfirm = get('banner-confirm');
+    eBannerConfirm.innerHTML = confirmText;
+    eBannerConfirm.tabIndex = 0;
     get('banner-skip').tabIndex = 1;
     get('banner').classList.add('show');
 }
 
 function hideUpdateBanner() {
-    get('banner-yes').tabIndex = -1;
+    get('banner-confirm').tabIndex = -1;
     get('banner-skip').tabIndex = -1;
     get('banner').classList.remove('show');
     eInput.focus();
 }
 
-function installUpdate() {
-    ipcRenderer.send('input:update-install');
+function confirmUpdate() {
+    if (selfUpdate) {
+        ipcRenderer.send('input:update-install');
+    } else {
+        ipcRenderer.send('open-release', nextVersion);
+    }
     hideUpdateBanner();
 }
 

@@ -10,6 +10,7 @@ let selectedMacroIndex = -1;
 let eInBehaviorMacroNew, eInBehaviorMacroRemove;
 let eInOutputForegroundColor, eInOutputForegroundOpacity, eInOutputBackgroundColor, eInOutputBackgroundOpacity;
 let settings;
+let selfUpdate;
 
 
 /* ---- INIT ---- */
@@ -22,7 +23,7 @@ handle(window, 'DOMContentLoaded', async () => {
     eInOutputForegroundOpacity = get('output-foreground-opacity');
     eInOutputBackgroundOpacity = get('output-background-opacity');
     
-    handle(eInUpdateCheck, 'change', () => setEnabled(eInUpdateAutoinstall, eInUpdateCheck.checked));
+    handle(eInUpdateCheck, 'change', () => setEnabled(eInUpdateAutoinstall, selfUpdate && eInUpdateCheck.checked));
     setupColorInput(eInOutputForegroundColor);
     setupColorInput(eInOutputBackgroundColor);
     setupRangeInput(eInOutputForegroundOpacity);
@@ -34,6 +35,9 @@ handle(window, 'DOMContentLoaded', async () => {
     readFromStorage();
     get('version').innerHTML = await ipcRenderer.invoke('get-version');
     handle(get('github-icon'), 'click', () => ipcRenderer.send('open-repos'));
+
+    // always show this annotation
+    showAnnotation('behavior-allow-drag-annotation');
 });
 
 
@@ -53,7 +57,9 @@ function cancel() {
 }
 
 async function readFromStorage() {
-    settings = await ipcRenderer.invoke('settings:read');
+    const fromMain = await ipcRenderer.invoke('settings:read');
+    settings = fromMain.settings;
+    selfUpdate = fromMain.selfUpdate;
     writeToInterface();
 }
 
@@ -82,7 +88,10 @@ function readFromInterface() {
 function writeToInterface() {
     eInUpdateCheck.checked = settings.updateCheck;
     eInUpdateAutoinstall.checked = settings.updateAutoinstall;
-    setEnabled(eInUpdateAutoinstall, settings.updateCheck);
+    setEnabled(eInUpdateAutoinstall, selfUpdate && settings.updateCheck);
+    if (!selfUpdate) {
+        showAnnotation('update-autoinstall-annotation');
+    }
     eInBehaviorAllowDrag.checked = settings.behaviorAllowDrag;
     for (macro in settings.behaviorMacros) {
         appendMacro(macro, settings.behaviorMacros[macro], false);
@@ -116,6 +125,12 @@ function setupColorInput(element) {
 
 function setupRangeInput(element) {
     handle(element, 'input', () => updateInputValueStyle(element.parentNode, element.value + '%'));
+}
+
+function showAnnotation(id) {
+    // 'hidden' class needs to be removed with some delay because otherwise,
+    // annotation flashes shortly when window is initially displayed
+    setTimeout(() => get(id).classList.remove('hidden'), 100);
 }
 
 function setupMacroTable() {
