@@ -85,7 +85,7 @@ function handleUpdateAvailable(args) {
     if (selfUpdate) {
         showUpdateBanner('A new version (v' + nextVersion + ') is available, would you like to install it when closing the app?', 'Yes');
     } else {
-        showUpdateBanner('A new version (v' + nextVersion + ') is available, would you like to go to the downloads page for this release?', 'Open');
+        showUpdateBanner('A new version (v' + nextVersion + ') is available, would you like to go to the download page for this release?', 'Open');
     }
 }
 
