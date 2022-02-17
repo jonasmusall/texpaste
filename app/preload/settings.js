@@ -35,9 +35,6 @@ handle(window, 'DOMContentLoaded', async () => {
     readFromStorage();
     get('version').innerHTML = await ipcRenderer.invoke('get-version');
     handle(get('github-icon'), 'click', () => ipcRenderer.send('open-repos'));
-
-    // always show this annotation
-    showAnnotation('behavior-allow-drag-annotation');
 });
 
 
@@ -90,7 +87,7 @@ function writeToInterface() {
     eInUpdateAutoinstall.checked = settings.updateAutoinstall;
     setEnabled(eInUpdateAutoinstall, selfUpdate && settings.updateCheck);
     if (!selfUpdate) {
-        showAnnotation('update-autoinstall-annotation');
+        get('update-autoinstall-annotation').classList.remove('hidden');
     }
     eInBehaviorAllowDrag.checked = settings.behaviorAllowDrag;
     for (macro in settings.behaviorMacros) {
@@ -125,12 +122,6 @@ function setupColorInput(element) {
 
 function setupRangeInput(element) {
     handle(element, 'input', () => updateInputValueStyle(element.parentNode, element.value + '%'));
-}
-
-function showAnnotation(id) {
-    // 'hidden' class needs to be removed with some delay because otherwise,
-    // annotation flashes shortly when window is initially displayed
-    setTimeout(() => get(id).classList.remove('hidden'), 100);
 }
 
 function setupMacroTable() {
