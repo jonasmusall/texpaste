@@ -9,7 +9,7 @@ let eOutput, eBackground;
 
 /* ---- IPC ---- */
 ipcRenderer.on('tex', (event, args) => updateTex(args));
-ipcRenderer.on('update-settings', (event, args) => applySettings(args));
+ipcRenderer.on('settings', (event, args) => applySettings(args));
 
 
 /* ---- INIT ---- */
