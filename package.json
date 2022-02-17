@@ -14,7 +14,8 @@
     "start": "electron .",
     "pack": "electron-builder --dir",
     "dist": "electron-builder -p never",
-    "dist-wl": "electron-builder -wl -p never",
+    "build-win-nsis": "electron-builder -w nsis -p never -c.extraMetadata.selfUpdate=true",
+    "build-win-zip": "electron-builder -w zip -p never -c.extraMetadata.selfUpdate=false",
     "publish": "electron-builder -p always"
   },
   "devDependencies": {
@@ -42,6 +43,11 @@
       "perMachine": false,
       "createDesktopShortcut": false,
       "artifactName": "${productName}_${version}_setup_${os}.${ext}"
-    }
-  }
+    },
+    "extraResources": [{
+      "from": "build/app-update.yml",
+      "to": "app-update.yml"
+    }]
+  },
+  "selfUpdate": "false"
 }

@@ -13,14 +13,16 @@
         <h1>Updates</h1>
         <p>v<span id="version"></span><img id="github-icon" src="../assets/icons/github.svg"></p>
         <label class="item checkbox">
-            <input type="checkbox" id="update-check" tabindex="0"><div></div><span>Check for updates</span>
+            <input type="checkbox" id="update-check" tabindex="0"><div class="input"></div><span>Check for updates</span>
         </label>
         <label class="item checkbox">
-            <input type="checkbox" id="update-autoinstall" tabindex="1"><div></div><span>Install updates automatically</span>
+            <input type="checkbox" id="update-autoinstall" tabindex="1"><div class="input"></div><span>Install updates automatically</span>
+            <div id="update-autoinstall-annotation" class="annotation hidden"><span>Only available when application is installed (using the "setup" executable for Windows or "AppImage" on Linux).</span></div>
         </label>
         <h1>Behavior</h1>
         <label class="item checkbox">
-            <input type="checkbox" id="behavior-allow-drag" tabindex="2"><div></div><span>Make window draggable (disables the hover effect)</span>
+            <input type="checkbox" id="behavior-allow-drag" tabindex="2"><div class="input"></div><span>Draggable window</span>
+            <div id="behavior-allow-drag-annotation" class="annotation hidden"><span>Makes window controls permanently visible</span></div>
         </label>
         <h1>Macros</h1>
         <p>Use e.g. <span class="monospace">#1</span> in definition for first macro arg.</p>
@@ -42,13 +44,13 @@
         </div>
         <h1>Output</h1>
         <label class="item color">
-            <input type="color" id="output-foreground-color" tabindex="6"><span>Foreground color:</span><div></div>
+            <input type="color" id="output-foreground-color" tabindex="6"><span>Foreground color:</span><div class="input"></div>
         </label>
         <label class="item indented range">
             <input type="range" id="output-foreground-opacity" min="0" max="100" step="1" tabindex="7"><output></output><span>Opacity:</span>
         </label>
         <label class="item color">
-            <input type="color" id="output-background-color" tabindex="8"><span>Background color:</span><div></div>
+            <input type="color" id="output-background-color" tabindex="8"><span>Background color:</span><div class="input"></div>
         </label>
         <label class="item indented range">
             <input type="range" id="output-background-opacity" min="0" max="100" step="1" tabindex="9"><output></output><span>Opacity:</span>
