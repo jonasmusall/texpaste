@@ -5,6 +5,8 @@ const katex = require('katex');
 
 /* ---- VARS ---- */
 let eOutput, eBackground;
+let lastTex = '';
+let macros = {};
 
 
 /* ---- IPC ---- */
@@ -26,6 +28,7 @@ function get(id) { return document.getElementById(id); }
 function handle(element, event, listener) { element.addEventListener(event, listener); }
 
 function updateTex(tex) {
+    lastTex = tex;
     katex.render(
         tex,
         eOutput,
@@ -33,7 +36,8 @@ function updateTex(tex) {
             displayMode: true,
             output: 'html',
             throwOnError: false,
-            strict: 'ignore'
+            strict: 'ignore',
+            macros: macros
         }
     );
 }
@@ -50,4 +54,6 @@ function applySettings(settings) {
     eOutput.style.opacity = settings.outputForegroundOpacity / 100;
     eBackground.style.backgroundColor = settings.outputBackgroundColor;
     eBackground.style.opacity = settings.outputBackgroundOpacity / 100;
+    macros = settings.behaviorMacros;
+    updateTex(lastTex);
 }
