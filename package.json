@@ -55,7 +55,8 @@
         "deb",
         "tar.gz"
       ],
-      "maintainer": "Jonas Musall"
+      "maintainer": "Jonas Musall",
+      "category": "Utility"
     },
     "nsis": {
       "oneClick": true,
