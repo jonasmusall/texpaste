@@ -32,7 +32,6 @@ ipcMain.on('input:ready', () => {
 ipcMain.on('input:tex', async (event, args) => (await winOutDf.promise).webContents.send('tex', args));
 ipcMain.on('input:accept', acceptInput);
 ipcMain.on('input:open-settings', createSettingsWindow);
-ipcMain.on('input:update-check', checkForUpdates);
 ipcMain.on('input:update-install', installUpdateOnQuit);
 
 ipcMain.on('output:ready', () => {
