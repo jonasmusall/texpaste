@@ -90,9 +90,9 @@ function handleUpdateAvailable(args) {
 }
 
 function showUpdateBanner(bannerText, confirmText) {
-    get('banner-text').innerHTML = bannerText;
+    get('banner-text').textContent = bannerText;
     const eBannerConfirm = get('banner-confirm');
-    eBannerConfirm.innerHTML = confirmText;
+    eBannerConfirm.textContent = confirmText;
     eBannerConfirm.tabIndex = 0;
     get('banner-skip').tabIndex = 1;
     get('banner').classList.add('show');
