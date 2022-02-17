@@ -13,10 +13,9 @@
     "postinstall": "electron-builder install-app-deps",
     "start": "electron .",
     "pack": "electron-builder --dir",
-    "dist": "electron-builder",
-    "build-win-nsis": "electron-builder -w nsis -p never -c.extraMetadata.selfUpdate=true",
-    "build-win-zip": "electron-builder -w zip -p never -c.extraMetadata.selfUpdate=false",
-    "publish": "electron-builder -p always"
+    "dist": "electron-builder -p never",
+    "build-selfupdate-true": "electron-builder -w nsis -l AppImage -p never -c.extraMetadata.selfUpdate=true",
+    "build-selfupdate-false": "electron-builder -w portable zip -l deb tar.gz -p never -c.extraMetadata.selfUpdate=false"
   },
   "devDependencies": {
     "electron": "^13.1.9",
@@ -30,18 +29,40 @@
   },
   "build": {
     "appId": "jonasmusall.texpaste",
+    "artifactName": "${productName}_${version}_${os}.${ext}",
+    "files": [
+      "!.github",
+      "!docs",
+      "!dev-app-update.yml",
+      "!README.md"
+    ],
+    "extraResources": [
+      {
+        "from": "build/app-update.yml",
+        "to": "app-update.yml"
+      }
+    ],
     "win": {
-      "target": "nsis"
+      "target": [
+        "nsis",
+        "portable",
+        "zip"
+      ]
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb",
+        "tar.gz"
+      ],
+      "maintainer": "Jonas Musall"
     },
     "nsis": {
       "oneClick": true,
       "perMachine": false,
-      "createDesktopShortcut": false
-    },
-    "extraResources": [{
-      "from": "build/app-update.yml",
-      "to": "app-update.yml"
-    }]
+      "createDesktopShortcut": false,
+      "artifactName": "${productName}_${version}_setup_${os}.${ext}"
+    }
   },
   "selfUpdate": "false"
 }
