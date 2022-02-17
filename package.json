@@ -14,8 +14,8 @@
     "start": "electron .",
     "pack": "electron-builder --dir",
     "dist": "electron-builder -p never",
-    "build-win-nsis": "electron-builder -w nsis -p never -c.extraMetadata.selfUpdate=true",
-    "build-win-zip": "electron-builder -w zip -p never -c.extraMetadata.selfUpdate=false",
+    "build-selfupdate-true": "electron-builder -w nsis -l AppImage -p never -c.extraMetadata.selfUpdate=true",
+    "build-selfupdate-false": "electron-builder -w portable zip -l deb tar.gz -p never -c.extraMetadata.selfUpdate=false",
     "publish": "electron-builder -p always"
   },
   "devDependencies": {
