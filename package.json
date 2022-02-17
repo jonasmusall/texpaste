@@ -31,6 +31,12 @@
   "build": {
     "appId": "jonasmusall.texpaste",
     "artifactName": "${productName}_${version}_${os}.${ext}",
+    "files": [
+      "!.github",
+      "!docs",
+      "!dev-app-update.yml",
+      "!README.md"
+    ],
     "win": {
       "target": ["nsis", "portable", "zip"]
     },
