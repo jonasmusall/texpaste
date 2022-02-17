@@ -37,11 +37,25 @@
       "!dev-app-update.yml",
       "!README.md"
     ],
+    "extraResources": [
+      {
+        "from": "build/app-update.yml",
+        "to": "app-update.yml"
+      }
+    ],
     "win": {
-      "target": ["nsis", "portable", "zip"]
+      "target": [
+        "nsis",
+        "portable",
+        "zip"
+      ]
     },
     "linux": {
-      "target": ["AppImage", "deb", "tar.gz"],
+      "target": [
+        "AppImage",
+        "deb",
+        "tar.gz"
+      ],
       "maintainer": "Jonas Musall"
     },
     "nsis": {
@@ -49,11 +63,7 @@
       "perMachine": false,
       "createDesktopShortcut": false,
       "artifactName": "${productName}_${version}_setup_${os}.${ext}"
-    },
-    "extraResources": [{
-      "from": "build/app-update.yml",
-      "to": "app-update.yml"
-    }]
+    }
   },
   "selfUpdate": "false"
 }
