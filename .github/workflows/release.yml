@@ -32,7 +32,7 @@ jobs:
       - name: Update npm
         run: npm update -g npm
       - name: Install node dependencies
-        run: npm install
+        run: npm ci
       - name: Take container home folder ownership
         # necessary to get Wine to work
         run: chown root:root /github/home
