@@ -46,7 +46,7 @@ ipcMain.on('settings:write', (event, args) => updateSettings(args));
 
 /* ---- APP STARTUP ---- */
 app.whenReady().then(() => {
-    if (require(path.join(__dirname, 'package.json')).selfUpdate === 'true') {
+    if (require(path.join(__dirname, 'package.json')).selfUpdate == true) {
         selfUpdate = true;
     }
     createInputWindow();

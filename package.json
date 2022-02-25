@@ -65,5 +65,5 @@
       "artifactName": "${productName}_${version}_setup_${os}.${ext}"
     }
   },
-  "selfUpdate": "false"
+  "selfUpdate": false
 }
