@@ -18,7 +18,7 @@
     "build-selfupdate-false": "electron-builder -w portable zip -l deb tar.gz -p never -c.extraMetadata.selfUpdate=false"
   },
   "devDependencies": {
-    "electron": "^17.0.1",
+    "electron": "17.0.0",
     "electron-builder": "^22.14.13"
   },
   "dependencies": {
