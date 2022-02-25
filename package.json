@@ -62,7 +62,10 @@
       "oneClick": true,
       "perMachine": false,
       "createDesktopShortcut": false,
-      "artifactName": "${productName}_${version}_setup_${os}.${ext}"
+      "artifactName": "${productName}_${version}_${os}_setup.${ext}"
+    },
+    "portable": {
+      "artifactName": "${productName}_${version}_${os}_portable.${ext}"
     }
   },
   "selfUpdate": false
