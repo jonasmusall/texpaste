@@ -96,7 +96,7 @@ function createSettingsWindow() {
         isSettingsWindowOpen = true;
         const winSettings = new BrowserWindow({
             width: 300,
-            height: 566,
+            height: 590,
             resizable: false,
             minimizable: false,
             maximizable: false,
@@ -128,7 +128,9 @@ async function acceptInput() {
     if (imgOut != null) {
         clipboard.writeImage(imgOut);
     }
-    (await winInDf.promise).close();
+    if ((await storeDf.promise).get('behaviorCloseOnAccept')) {
+        (await winInDf.promise).close();
+    }
 }
 
 function afterFrontEndReady() {
@@ -193,6 +195,10 @@ function initStore() {
             behaviorAllowDrag: {
                 type: 'boolean',
                 default: false
+            },
+            behaviorCloseOnAccept: {
+                type: 'boolean',
+                default: true,
             },
             behaviorMacros: {
                 type: "object",

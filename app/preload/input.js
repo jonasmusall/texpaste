@@ -5,7 +5,8 @@ const katex = require('katex');
 
 
 /* ---- VARS ---- */
-let eInput, eOutput;
+let eInput, eOutput, eAccept;
+let showAcceptRipple = false;
 let nextVersion;
 let selfUpdate;
 let macros = {};
@@ -20,10 +21,11 @@ ipcRenderer.on('update-notify', (event, args) => handleUpdateAvailable(args));
 handle(window, 'DOMContentLoaded', () => {
     eInput = get('tex-input');
     eOutput = get('tex-output');
+    eAccept = get('accept');
 
     handle(eInput, 'input', updateTex);
     handle(eInput, 'keyup', handleInputKeyUp);
-    handle(get('accept'), 'click', accept);
+    handle(eAccept, 'click', accept);
     handle(get('cancel'), 'click', cancel);
     handle(get('settings'), 'click', () => ipcRenderer.send('input:open-settings'));
     handle(get('banner-confirm'), 'click', confirmUpdate);
@@ -39,7 +41,13 @@ function get(id) { return document.getElementById(id); }
 function handle(element, event, listener) { element.addEventListener(event, listener); }
 
 function accept() {
+    if (showAcceptRipple) {
+        eAccept.classList.remove('ripple');
+        eAccept.offsetHeight;
+        eAccept.classList.add('ripple');
+    }
     ipcRenderer.send('input:accept');
+    eInput.focus();
 }
 
 function cancel() {
@@ -75,6 +83,7 @@ function applySettings(settings) {
     } else {
         document.body.classList.remove('draggable');
     }
+    showAcceptRipple = !settings.behaviorCloseOnAccept;
     macros = settings.behaviorMacros;
     updateTex();
 }

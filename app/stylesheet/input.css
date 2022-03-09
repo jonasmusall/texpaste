@@ -1,5 +1,18 @@
 @import url("common.css");
 
+@keyframes ripple {
+    from {
+        width: 0px;
+        height: 0px;
+        background-color: var(--green-dark);
+    }
+    to {
+        width: 1400px;
+        height: 1400px;
+        background-color: transparent;
+    }
+}
+
 html {
     height: 100%;
 }
@@ -27,6 +40,7 @@ body.draggable {
 }
 
 #input-container {
+    z-index: 1;
     flex-grow: 0;
     flex-shrink: 0;
     padding: 16px;
@@ -134,6 +148,21 @@ body:hover #window-controls > button {
 #accept {
     background-color: var(--green-light);
     border-color: var(--green);
+}
+
+#accept::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    display: block;
+    width: 0px;
+    height: 0px;
+    background-color: var(--green-dark);
+    border-radius: 700px;
+}
+
+#accept.ripple::after {
+    animation: ripple 1s ease-out;
 }
 
 #cancel {
