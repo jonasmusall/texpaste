@@ -1,19 +1,25 @@
-<img src="./docs/images/ui_preview.png">
+![texpaste logo](/docs/images/logo-light.svg#gh-dark-mode-only)
+![texpaste logo](/docs/images/logo-dark.svg#gh-light-mode-only)
 
-# TeXPaste
-Input TeX code to get a live preview. Press ENTER or click the green checkmark to copy the result to the clipboard and use it in another application. ESCAPE or clicking the close button will discard the output.
+Input TeX code to get a live preview. Press ENTER or click the green checkmark to copy the result to the clipboard and use it in another application. ESCAPE or clicking the close button will discard the output. Custom macros can be created in the settings.
 
 Made with [Electron](https://www.electronjs.org/) and [KaTeX](https://katex.org/).
 
-<img src="./docs/images/live_demo.gif">
+![Demonstration video](/docs/images/live_demo.gif)
 
-## Installation (Windows)
-Download `texpaste-Setup-[version number].exe` from one of the [releases](https://github.com/jonasmusall/texpaste/releases) and execute it. You will probably get a warning that the program was not executed due to security concerns. This is because code signing is currently not available to me because the certificates are too expensive. However, you can use the SHA512 hash to verify the file.
+## Installation
+Download options for Windows and Linux can be found in the latest [release](https://github.com/jonasmusall/texpaste/releases/latest). If you are using macOS, you will have to run this app from source. Listed below are the different kinds of files available to run or install texpaste.
 
-Instead of using the installer you can download and extract `texpaste-unpacked-[version number].zip` and execute the application (`texpaste.exe`) directly from this folder as a portable alternative to installing it.
+| File                                  | Platform | Type                                            |
+| ------------------------------------- | -------- | ----------------------------------------------- |
+| `texpaste_(version)_linux.AppImage`   | Linux    | Standalone app                                  |
+| `texpaste_(version)_linux.deb`        | Linux    | Installable package for Debian                  |
+| `texpaste_(version)_linux.tar.gz`     | Linux    | Archive containing executable and program files |
+| `texpaste_(version)_win.zip`          | Windows  | Archive containing executable and program files |
+| `texpaste_(version)_win_portable.exe` | Windows  | Standalone app (slow startup)                   |
+| `texpaste_(version)_win_setup.exe`    | Windows  | Installation wizard                             |
 
-## Installation (other platforms)
-Downloads for Linux are being worked on. If you are using macOS, you will have to build the app for yourself as described below.
+⚠️ *Windows users will be presented with a security warning on first launch. This is because I cannot afford a certificate to sign my code. You can circumvent the warning by clicking on "More info" and "Run anyway".*
 
 ## Development
 To build or run this app directly from the source code, you will need [Node.js](https://nodejs.org/). Clone or download the repository and use the following commands.
@@ -26,4 +32,4 @@ To build or run this app directly from the source code, you will need [Node.js](
 | `npm run dist` | Packages while also creating an installer.                         |
 
 ## Upcoming features
-Custom TeX macros, possibly an autocomplete feature. Feel free to suggest something or file a bug report on the [issue tracker](https://github.com/jonasmusall/texpaste/issues).
+Autocomplete. Feel free to suggest something or file a bug report on the [issue tracker](https://github.com/jonasmusall/texpaste/issues).
