@@ -22,7 +22,7 @@ Download options for Windows and Linux can be found in the latest [release](http
 ⚠️ *Windows users will be presented with a security warning on first launch. This is because I cannot afford a certificate to sign my code. You can circumvent the warning by clicking on "More info" and "Run anyway".*
 
 ## Development
-To build or run this app directly from the source code, you will need [Node.js](https://nodejs.org/). Clone or download the repository and use the following commands.
+To build or run this app directly from the source code, you will need [Node.js](https://nodejs.org/) with npm v7 or later. Clone or download the repository and use the following commands.
 
 | Command        | Description                                                        |
 | -------------- | ------------------------------------------------------------------ |
