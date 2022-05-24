@@ -1,5 +1,17 @@
 @import url("common.css");
 
+@keyframes ghost {
+    0% {
+        filter: drop-shadow(0px 0px 0px #ffffff86);
+    }
+    99% {
+        filter: drop-shadow(0px -30px 0px transparent);
+    }
+    100% {
+        filter: none;
+    }
+}
+
 html {
     height: 100%;
 }
@@ -37,6 +49,10 @@ body.draggable {
     flex-grow: 0;
     font-size: 18px;
     user-select: none;
+}
+
+#tex-output.ghost {
+    animation: ghost 0.6s ease-out;
 }
 
 #tex-input {

@@ -23,6 +23,9 @@
         <label class="item checkbox">
             <input type="checkbox" id="behavior-allow-drag" tabindex="2"><div class="input"></div><span>Draggable window</span>
         </label>
+        <label class="item checkbox">
+            <input type="checkbox" id="behavior-close-on-accept" tabindex="3"><div class="input"></div><span>Close app when accepting</span>
+        </label>
         <h1>Macros</h1>
         <p>Use e.g. <span class="monospace">#1</span> in definition for first macro arg.</p>
         <div class="item table">
@@ -39,23 +42,23 @@
             </div>
         </div>
         <div class="item">
-            <button id="macro-new" tabindex="4">New</button><button id="macro-remove" tabindex="5" disabled>Remove</button>
+            <button id="macro-new" tabindex="5">New</button><button id="macro-remove" tabindex="6" disabled>Remove</button>
         </div>
         <h1>Output</h1>
         <label class="item color">
-            <input type="color" id="output-foreground-color" tabindex="6"><span>Foreground color:</span><div class="input"></div>
+            <input type="color" id="output-foreground-color" tabindex="7"><span>Foreground color:</span><div class="input"></div>
         </label>
         <label class="item indented range">
-            <input type="range" id="output-foreground-opacity" min="0" max="100" step="1" tabindex="7"><output></output><span>Opacity:</span>
+            <input type="range" id="output-foreground-opacity" min="0" max="100" step="1" tabindex="8"><output></output><span>Opacity:</span>
         </label>
         <label class="item color">
-            <input type="color" id="output-background-color" tabindex="8"><span>Background color:</span><div class="input"></div>
+            <input type="color" id="output-background-color" tabindex="9"><span>Background color:</span><div class="input"></div>
         </label>
         <label class="item indented range">
-            <input type="range" id="output-background-opacity" min="0" max="100" step="1" tabindex="9"><output></output><span>Opacity:</span>
+            <input type="range" id="output-background-opacity" min="0" max="100" step="1" tabindex="10"><output></output><span>Opacity:</span>
         </label>
         <div class="flex row justify-end align-end">
-            <button id="save" tabindex="10" autofocus>Save</button><button id="cancel" tabindex="11">Cancel</button>
+            <button id="save" tabindex="11" autofocus>Save</button><button id="cancel" tabindex="12">Cancel</button>
         </div>
     </body>
 </html>

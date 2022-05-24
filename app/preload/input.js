@@ -6,6 +6,7 @@ const katex = require('katex');
 
 /* ---- VARS ---- */
 let eInput, eOutput;
+let showAcceptRipple = false;
 let nextVersion;
 let selfUpdate;
 let macros = {};
@@ -39,7 +40,13 @@ function get(id) { return document.getElementById(id); }
 function handle(element, event, listener) { element.addEventListener(event, listener); }
 
 function accept() {
+    if (showAcceptRipple) {
+        eOutput.classList.remove('ghost');
+        eOutput.offsetHeight;
+        eOutput.classList.add('ghost');
+    }
     ipcRenderer.send('input:accept');
+    eInput.focus();
 }
 
 function cancel() {
@@ -75,6 +82,7 @@ function applySettings(settings) {
     } else {
         document.body.classList.remove('draggable');
     }
+    showAcceptRipple = !settings.behaviorCloseOnAccept;
     macros = settings.behaviorMacros;
     updateTex();
 }

@@ -2,9 +2,9 @@
 const { ipcRenderer } = require('electron');
 
 /* ---- CONSTS, VARS ---- */
-const MACRO_TABLE_TAB_INDEX = 3;
+const MACRO_TABLE_TAB_INDEX = 4;
 let eInUpdateCheck, eInUpdateAutoinstall;
-let eInBehaviorAllowDrag;
+let eInBehaviorAllowDrag, eInBehaviorCloseOnAccept;
 let eMacroTable;
 let selectedMacroIndex = -1;
 let eInBehaviorMacroNew, eInBehaviorMacroRemove;
@@ -18,6 +18,7 @@ handle(window, 'DOMContentLoaded', async () => {
     eInUpdateCheck = get('update-check');
     eInUpdateAutoinstall = get('update-autoinstall');
     eInBehaviorAllowDrag = get('behavior-allow-drag');
+    eInBehaviorCloseOnAccept = get('behavior-close-on-accept');
     eInOutputForegroundColor = get('output-foreground-color');
     eInOutputBackgroundColor = get('output-background-color');
     eInOutputForegroundOpacity = get('output-foreground-opacity');
@@ -68,6 +69,7 @@ function readFromInterface() {
     settings.updateCheck = eInUpdateCheck.checked;
     settings.updateAutoinstall = eInUpdateAutoinstall.checked;
     settings.behaviorAllowDrag = eInBehaviorAllowDrag.checked;
+    settings.behaviorCloseOnAccept = eInBehaviorCloseOnAccept.checked;
     settings.behaviorMacros = {};
     map(eMacroTable.rows, row => {
         let name = row.cells[0].children[0].value;
@@ -90,6 +92,7 @@ function writeToInterface() {
         get('update-autoinstall-annotation').classList.remove('hidden');
     }
     eInBehaviorAllowDrag.checked = settings.behaviorAllowDrag;
+    eInBehaviorCloseOnAccept.checked = settings.behaviorCloseOnAccept;
     for (macro in settings.behaviorMacros) {
         appendMacro(macro, settings.behaviorMacros[macro], false);
     }
