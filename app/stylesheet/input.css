@@ -1,15 +1,14 @@
 @import url("common.css");
 
-@keyframes ripple {
-    from {
-        width: 0px;
-        height: 0px;
-        background-color: var(--green-dark);
+@keyframes ghost {
+    0% {
+        filter: drop-shadow(0px 0px 0px #ffffff86);
     }
-    to {
-        width: 1400px;
-        height: 1400px;
-        background-color: transparent;
+    99% {
+        filter: drop-shadow(0px -30px 0px transparent);
+    }
+    100% {
+        filter: none;
     }
 }
 
@@ -51,6 +50,10 @@ body.draggable {
     flex-grow: 0;
     font-size: 18px;
     user-select: none;
+}
+
+#tex-output.ghost {
+    animation: ghost 0.6s ease-out;
 }
 
 #tex-input {
@@ -148,21 +151,6 @@ body:hover #window-controls > button {
 #accept {
     background-color: var(--green-light);
     border-color: var(--green);
-}
-
-#accept::after {
-    content: "";
-    position: absolute;
-    z-index: -1;
-    display: block;
-    width: 0px;
-    height: 0px;
-    background-color: var(--green-dark);
-    border-radius: 700px;
-}
-
-#accept.ripple::after {
-    animation: ripple 1s ease-out;
 }
 
 #cancel {

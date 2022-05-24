@@ -42,9 +42,9 @@ function handle(element, event, listener) { element.addEventListener(event, list
 
 function accept() {
     if (showAcceptRipple) {
-        eAccept.classList.remove('ripple');
-        eAccept.offsetHeight;
-        eAccept.classList.add('ripple');
+        eOutput.classList.remove('ghost');
+        eOutput.offsetHeight;
+        eOutput.classList.add('ghost');
     }
     ipcRenderer.send('input:accept');
     eInput.focus();
