@@ -198,7 +198,7 @@ function initStore() {
             },
             behaviorCloseOnAccept: {
                 type: 'boolean',
-                default: true,
+                default: process.platform == 'darwin' || process.platform == 'win32',
             },
             behaviorMacros: {
                 type: "object",
