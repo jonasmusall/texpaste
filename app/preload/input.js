@@ -5,7 +5,7 @@ const katex = require('katex');
 
 
 /* ---- VARS ---- */
-let eInput, eOutput, eAccept;
+let eInput, eOutput;
 let showAcceptRipple = false;
 let nextVersion;
 let selfUpdate;
@@ -21,11 +21,10 @@ ipcRenderer.on('update-notify', (event, args) => handleUpdateAvailable(args));
 handle(window, 'DOMContentLoaded', () => {
     eInput = get('tex-input');
     eOutput = get('tex-output');
-    eAccept = get('accept');
 
     handle(eInput, 'input', updateTex);
     handle(eInput, 'keyup', handleInputKeyUp);
-    handle(eAccept, 'click', accept);
+    handle(get('accept'), 'click', accept);
     handle(get('cancel'), 'click', cancel);
     handle(get('settings'), 'click', () => ipcRenderer.send('input:open-settings'));
     handle(get('banner-confirm'), 'click', confirmUpdate);

@@ -10,11 +10,6 @@
         <title>texpaste</title>
     </head>
     <body>
-        <div id="window-controls" class="flex row">
-            <button id="settings" class="icon" tabindex="3"><img src="../assets/icons/settings.svg"></button>
-            <button id="accept" tabindex="4"><img src="../assets/icons/check.svg"></button>
-            <button id="cancel" tabindex="5"><img src="../assets/icons/close.svg"></button>
-        </div>
         <label id="main-container" class="flex">
             <div id="output-container" class="flex">
                 <div id="tex-output"></div>
@@ -23,6 +18,11 @@
                 <input id="tex-input" type="text" spellcheck="false" tabindex="2">
             </div>
         </label>
+        <div id="window-controls" class="flex row">
+            <button id="settings" class="icon" tabindex="3"><img src="../assets/icons/settings.svg"></button>
+            <button id="accept" tabindex="4"><img src="../assets/icons/check.svg"></button>
+            <button id="cancel" tabindex="5"><img src="../assets/icons/close.svg"></button>
+        </div>
         <div id="banner-container" class="flex row">
             <div id="banner" class="flex">
                 <p id="banner-text"></p>
