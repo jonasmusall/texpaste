@@ -26,6 +26,9 @@
     "katex": "^0.15.2",
     "semver": "^7.3.5"
   },
+  "engines": {
+    "npm": ">=7.0.0"
+  },
   "build": {
     "appId": "jonasmusall.texpaste",
     "artifactName": "${productName}_${version}_${os}.${ext}",
