@@ -8,7 +8,7 @@
     "type": "git",
     "url": "https://github.com/jonasmusall/texpaste.git"
   },
-  "main": "main.js",
+  "main": "main/app.js",
   "scripts": {
     "start": "electron .",
     "pack": "electron-builder --dir",

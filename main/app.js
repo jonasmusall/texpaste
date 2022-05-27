@@ -46,7 +46,7 @@ ipcMain.on('settings:write', (event, args) => updateSettings(args));
 
 /* ---- APP STARTUP ---- */
 app.whenReady().then(() => {
-    if (require(path.join(__dirname, 'package.json')).selfUpdate == true) {
+    if (require(path.resolve(__dirname, '..', 'package.json')).selfUpdate == true) {
         selfUpdate = true;
     }
     createInputWindow();
@@ -65,10 +65,10 @@ function createInputWindow() {
         show: false,
         frame: false,
         webPreferences: {
-            preload: path.join(__dirname, 'app/preload/input.js')
+            preload: path.resolve(__dirname, '..', 'renderer/preload/input.js')
         }
     });
-    winIn.loadFile('app/input.html');
+    winIn.loadFile('renderer/pages/input.html');
     winIn.once('ready-to-show', () => { winIn.show(); console.timeEnd('show'); });
     winIn.on('close', async () => (await winOutDf.promise).close());
 }
@@ -82,10 +82,10 @@ function createOutputWindow() {
         show: false,
         webPreferences: {
             offscreen: true,
-            preload: path.join(__dirname, 'app/preload/output.js')
+            preload: path.resolve(__dirname, '..', 'renderer/preload/output.js')
         }
     });
-    winOut.loadFile('app/output.html');
+    winOut.loadFile('renderer/pages/output.html');
     winOut.webContents.on('paint', (event, dirty, image) => {
         imgOut = image;
     });
@@ -104,11 +104,11 @@ function createSettingsWindow() {
             parent: winIn,
             modal: true,
             webPreferences: {
-                preload: path.join(__dirname, 'app/preload/settings.js')
+                preload: path.resolve(__dirname, '..', 'renderer/preload/settings.js')
             }
         });
         winSettings.menuBarVisible = false;
-        winSettings.loadFile('app/settings.html');
+        winSettings.loadFile('renderer/pages/settings.html');
         winSettings.once('ready-to-show', () => winSettings.show());
         winSettings.on('close', () => isSettingsWindowOpen = false);
     }
