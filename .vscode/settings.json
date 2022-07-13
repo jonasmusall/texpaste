@@ -2,7 +2,8 @@
   "files.exclude": {
     "node_modules": true,
     "dist": true,
-    //"**/*.js": true,
-    //"**/*.map": true
+    "**/*.js": { "when": "$(basename).ts" },
+    "**/*.js.map": true,
+    "renderer/tsconfig.tsbuildinfo": true
   }
 }

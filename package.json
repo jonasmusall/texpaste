@@ -10,9 +10,9 @@
   },
   "main": "main/app.js",
   "scripts": {
-    "compile": "tsc",
-    "compile-watch": "tsc --watch",
-    "compile-prod": "tsc --sourceMap false",
+    "compile": "tsc --build",
+    "compile-watch": "tsc --build --watch",
+    "compile-prod": "tsc --project . --sourceMap false && tsc --project ./renderer --sourceMap false",
     "start": "electron .",
     "pack": "electron-builder --dir",
     "dist": "electron-builder -p never",
@@ -20,6 +20,7 @@
     "build-selfupdate-false": "electron-builder -w portable zip -l deb tar.gz -p never -c.extraMetadata.selfUpdate=false"
   },
   "devDependencies": {
+    "@types/katex": "^0.14.0",
     "@types/node": "^17.0.36",
     "electron": "17.0.0",
     "electron-builder": "^22.14.13",

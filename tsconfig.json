@@ -1,4 +1,10 @@
 {
+  /* TypeScript configuration for main and preload scripts. */
+  "include": [
+    "main/**/*.ts",
+    "preload/**/*.ts",
+    "shared/types/*.ts"
+  ],
   "compilerOptions": {
     "target": "es6",
     "module": "CommonJS",
@@ -10,5 +16,8 @@
     "types": [
       "node"
     ]
-  }
+  },
+  "references": [
+    { "path": "./renderer" }
+  ]
 }

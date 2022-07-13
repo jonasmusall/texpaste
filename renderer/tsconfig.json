@@ -1,0 +1,13 @@
+{
+  /* TypeScript configuration for renderer scripts. */
+  "extends": "../tsconfig.json",
+  "include": [
+    "**/*.ts",
+    "../shared/types/*.ts"
+  ],
+  "compilerOptions": {
+    "module": "ES6",
+    "moduleResolution": "Classic",
+    "composite": true
+  }
+}
