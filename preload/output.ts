@@ -1,6 +1,6 @@
 import { contextBridge } from 'electron';
 import { ipcRenderer } from './lib/ipcRenderer';
-import katex from 'katex';
+import { katexRender } from './lib/katex';
 
 let texTarget: HTMLElement | undefined;
 let lastTex: string | undefined;
@@ -8,7 +8,7 @@ let macros = {};
 ipcRenderer.on('settings', (_event, settings) => {
   macros = settings.behaviorMacros;
   if (texTarget && lastTex) {
-    katex.render(lastTex, texTarget, { macros });
+    katexRender(lastTex, texTarget, macros);
   }
 });
 
@@ -22,7 +22,7 @@ const outputWindowApi : OutputWindowContextBridgeApi = {
   setTexTarget(target: HTMLElement): void {
     texTarget = target;
     if (lastTex) {
-      katex.render(lastTex, texTarget, { macros });
+      katexRender(lastTex, texTarget, macros);
     }
   },
 
@@ -30,7 +30,7 @@ const outputWindowApi : OutputWindowContextBridgeApi = {
     ipcRenderer.send('tex', tex);
     lastTex = tex;
     if (texTarget) {
-      katex.render(tex, texTarget, { macros });
+      katexRender(tex, texTarget, macros);
     }
   },
 
