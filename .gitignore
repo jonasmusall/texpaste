@@ -3,3 +3,4 @@ dist
 renderer/tsconfig.tsbuildinfo
 **/*.js
 **/*.js.map
+!preload/lib/katex.js
