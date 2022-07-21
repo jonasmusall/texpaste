@@ -11,6 +11,8 @@ let nextVersion = '0.0.0';
 let selfUpdate = false;
 
 
+inputWindowApi.addSettingsChangedListener(applySettings);
+inputWindowApi.addUpdateAvailableListener(handleUpdateAvailable);
 inputWindowApi.setTexTarget(texOutput);
 listen(texInput, 'input', updateTex);
 listen(texInput, 'keyup', handleInputKeyUp);

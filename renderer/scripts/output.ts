@@ -6,6 +6,7 @@ const texOutput = id('tex-output') as HTMLDivElement;
 const background = id('background') as HTMLDivElement;
 
 
+outputWindowApi.addSettingsChangedListener(applySettings);
 outputWindowApi.setTexTarget(texOutput);
 new ResizeObserver(sizeChanged).observe(texOutput);
 
