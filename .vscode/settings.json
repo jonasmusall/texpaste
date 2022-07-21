@@ -4,7 +4,6 @@
     "dist": true,
     "**/*.js": { "when": "$(basename).ts" },
     "**/*.js.map": true,
-    "renderer/tsconfig.tsbuildinfo": true,
-    "renderer/**/*.d.ts": true,
+    "renderer/tsconfig.tsbuildinfo": true
   }
 }

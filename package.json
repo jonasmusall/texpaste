@@ -10,8 +10,10 @@
   },
   "main": "main/app.js",
   "scripts": {
-    "compile": "tsc --build",
-    "compile-watch": "tsc --build --watch",
+    "compile-node": "tsc --project .",
+    "compile-renderer": "tsc --project ./renderer",
+    "compile-watch-node": "tsc --watch --project .",
+    "compile-watch-renderer": "tsc --watch --project ./renderer",
     "compile-prod": "tsc --project . --sourceMap false && tsc --project ./renderer --sourceMap false",
     "start": "electron .",
     "pack": "electron-builder --dir",

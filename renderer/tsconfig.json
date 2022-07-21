@@ -1,14 +1,16 @@
 {
   /* TypeScript configuration for renderer scripts. */
-  "extends": "../tsconfig.json",
   "include": [
     "**/*.ts",
     "../shared/types/*.ts"
   ],
   "compilerOptions": {
+    "target": "ES6",
     "module": "ES6",
-    "moduleResolution": "Classic",
-    "composite": true
-    // declaration emission cannot be disabled in composite mode
+    "moduleResolution": "classic",
+    "sourceMap": true,
+    "strict": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true
   }
 }
