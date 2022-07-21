@@ -82,7 +82,7 @@ function createOutputWindow() {
         show: false,
         webPreferences: {
             offscreen: true,
-            preload: path.resolve(__dirname, '..', 'renderer/preload/output.js')
+            preload: path.resolve(__dirname, '..', 'preload/output.js')
         }
     });
     winOut.loadFile('renderer/pages/output.html');
