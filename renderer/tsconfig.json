@@ -9,5 +9,6 @@
     "module": "ES6",
     "moduleResolution": "Classic",
     "composite": true
+    // declaration emission cannot be disabled in composite mode
   }
 }

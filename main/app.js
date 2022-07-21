@@ -65,7 +65,7 @@ function createInputWindow() {
         show: false,
         frame: false,
         webPreferences: {
-            preload: path.resolve(__dirname, '..', 'renderer/preload/input.js')
+            preload: path.resolve(__dirname, '..', 'preload/input.js')
         }
     });
     winIn.loadFile('renderer/pages/input.html');
