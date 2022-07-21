@@ -104,7 +104,7 @@ function createSettingsWindow() {
             parent: winIn,
             modal: true,
             webPreferences: {
-                preload: path.resolve(__dirname, '..', 'renderer/preload/settings.js')
+                preload: path.resolve(__dirname, '..', 'preload/settings.js')
             }
         });
         winSettings.menuBarVisible = false;
