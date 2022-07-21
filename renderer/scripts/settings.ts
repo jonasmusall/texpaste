@@ -26,12 +26,12 @@ setupRangeInput(outputForegroundOpacity);
 setupRangeInput(outputBackgroundOpacity);
 listen(macroNew, 'click', appendEmtpyMacro);
 listen(macroRemove, 'click', removeSelectedMacro);
-listen(id('save') as HTMLButtonElement, 'click', save);
-listen(id('cancel') as HTMLButtonElement, 'click', cancel);
+listen(id('save')!, 'click', save);
+listen(id('cancel')!, 'click', cancel);
 
 readFromStorage();
-(id('version') as HTMLSpanElement).innerHTML = await settingsWindowApi.getAppVersion();
-listen(id('github-icon') as HTMLImageElement, 'click', settingsWindowApi.openRepository);
+id('version')!.innerHTML = await settingsWindowApi.getAppVersion();
+listen(id('github-icon')!, 'click', settingsWindowApi.openRepository);
 
 
 function save() {
@@ -79,7 +79,7 @@ function writeToInterface() {
   updateAutoinstall.checked = settings.updateAutoinstall;
   setEnabled(updateAutoinstall, selfUpdate && settings.updateCheck);
   if (!selfUpdate) {
-    (id('update-autoinstall-annotation') as HTMLDivElement).classList.remove('hidden');
+    id('update-autoinstall-annotation')!.classList.remove('hidden');
   }
   behaviorAllowDrag.checked = settings.behaviorAllowDrag;
   behaviorCloseOnAccept.checked = settings.behaviorCloseOnAccept;
