@@ -23,25 +23,15 @@ ipcMain.handle('get-version', app.getVersion);
 ipcMain.on('open-repos', () => shell.openExternal('https://github.com/jonasmusall/texpaste'));
 ipcMain.on('open-release', (event, args) => shell.openExternal('https://github.com/jonasmusall/texpaste/releases/tag/v' + args));
 
-ipcMain.on('input:ready', () => {
-    console.log('Resolving winIn');
-    winInDf.resolve(winIn);
-    winInUpdateSettings();
-    console.timeEnd('startup');
-});
-ipcMain.on('input:tex', async (event, args) => (await winOutDf.promise).webContents.send('tex', args));
-ipcMain.on('input:accept', acceptInput);
-ipcMain.on('input:open-settings', createSettingsWindow);
-ipcMain.on('input:update-install', installUpdateOnQuit);
+ipcMain.on('tex', async (event, args) => (await winOutDf.promise).webContents.send('tex', args));
+ipcMain.on('accept', acceptInput);
+ipcMain.on('open-settings', createSettingsWindow);
+ipcMain.on('install-update', installUpdateOnQuit);
 
-ipcMain.on('output:ready', () => {
-    winOutDf.resolve(winOut);
-    winOutUpdateSettings();
-});
-ipcMain.on('output:size', (event, args) => winOut.setSize(args.width + 60, args.height));
+ipcMain.on('resize-output', (event, args) => winOut.setSize(args.width + 60, args.height));
 
-ipcMain.handle('settings:read', async () => { return { settings: ((await storeDf.promise).store), selfUpdate: selfUpdate }});
-ipcMain.on('settings:write', (event, args) => updateSettings(args));
+ipcMain.handle('read-settings', async () => { return { settings: ((await storeDf.promise).store), selfUpdate: selfUpdate }});
+ipcMain.on('write-settings', (event, args) => updateSettings(args));
 
 
 /* ---- APP STARTUP ---- */
@@ -68,6 +58,10 @@ function createInputWindow() {
             preload: path.resolve(__dirname, '..', 'preload/input.js')
         }
     });
+    winIn.webContents.once('dom-ready', () => {
+        winInDf.resolve(winIn);
+        winInUpdateSettings();
+    });
     winIn.loadFile('renderer/pages/input.html');
     winIn.once('ready-to-show', () => { winIn.show(); console.timeEnd('show'); });
     winIn.on('close', async () => (await winOutDf.promise).close());
@@ -84,6 +78,10 @@ function createOutputWindow() {
             offscreen: true,
             preload: path.resolve(__dirname, '..', 'preload/output.js')
         }
+    });
+    winIn.webContents.once('dom-ready', () => {
+        winOutDf.resolve(winOut);
+        winOutUpdateSettings();
     });
     winOut.loadFile('renderer/pages/output.html');
     winOut.webContents.on('paint', (event, dirty, image) => {
