@@ -11,6 +11,12 @@ ipcRenderer.on('settings', (_event, settings) => {
     katexRender(lastTex, texTarget, macros);
   }
 });
+ipcRenderer.on('tex', (_event, tex) => {
+  if (texTarget) {
+    lastTex = tex;
+    katexRender(tex, texTarget, macros);
+  }
+});
 
 const outputWindowApi : OutputWindowContextBridgeApi = {
   addSettingsChangedListener(listener: (settings: any) => void): void {
@@ -23,14 +29,6 @@ const outputWindowApi : OutputWindowContextBridgeApi = {
     texTarget = target;
     if (lastTex) {
       katexRender(lastTex, texTarget, macros);
-    }
-  },
-
-  updateTex(tex: string): void {
-    ipcRenderer.send('tex', tex);
-    lastTex = tex;
-    if (texTarget) {
-      katexRender(tex, texTarget, macros);
     }
   },
 

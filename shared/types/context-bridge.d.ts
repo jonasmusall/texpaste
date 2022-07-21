@@ -13,7 +13,6 @@ type InputWindowContextBridgeApi = {
 type OutputWindowContextBridgeApi = {
   addSettingsChangedListener: (listener: (settings: any) => void) => void,
   setTexTarget: (target: HTMLElement) => void,
-  updateTex: (tex: string, renderTarget?: HTMLElement) => void,
   setWindowSize: (width: number, height: number) => void
 }
 
