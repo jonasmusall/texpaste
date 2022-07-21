@@ -8,7 +8,6 @@
     "target": "ES6",
     "module": "ES6",
     "moduleResolution": "classic",
-    "sourceMap": true,
     "strict": true,
     "noImplicitOverride": true,
     "noImplicitReturns": true
