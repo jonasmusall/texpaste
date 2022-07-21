@@ -1,4 +1,4 @@
-import { id, listen } from './lib/util.js';
+import { id } from './lib/util.js';
 declare const outputWindowApi: OutputWindowContextBridgeApi;
 
 
