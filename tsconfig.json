@@ -9,6 +9,7 @@
     "target": "ES6",
     "module": "CommonJS",
     "moduleResolution": "node",
+    "esModuleInterop": true,
     "strict": true,
     "noImplicitOverride": true,
     "noImplicitReturns": true,
