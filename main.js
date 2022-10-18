@@ -186,7 +186,7 @@ function initStore() {
             },
             updateAutoinstall: {
                 type: 'boolean',
-                default: true
+                default: selfUpdate
             },
             updateSkipVersion: {
                 type: 'string',
