@@ -147,7 +147,9 @@ async function initUpdater() {
     updater.autoDownload = false;
     updater.autoInstallOnAppQuit = (await storeDf.promise).get('updateAutoinstall');
     updater.removeListener('update-available', handleUpdateAvailable);
+    updater.removeListener('download-progress', handleUpdateDownloadProgress);
     updater.addListener('update-available', handleUpdateAvailable);
+    updater.addListener('download-progress', handleUpdateDownloadProgress);
 }
 
 async function checkForUpdates() {
@@ -168,6 +170,10 @@ async function handleUpdateAvailable(info) {
             (await winInDf.promise).webContents.send('update-notify', { nextVersion: info.version, selfUpdate: selfUpdate });
         }
     }
+}
+
+async function handleUpdateDownloadProgress(info) {
+    console.log(`download-progress:\n ${info.transferred}/${info.total}B ${info.percent}% at ${info.bytesPerSecond}B/s`);
 }
 
 async function installUpdateOnQuit() {
