@@ -23,6 +23,7 @@
   "dependencies": {
     "electron-store": "^8.0.1",
     "electron-updater": "^4.6.5",
+    "human-format": "^1.0.0",
     "katex": "^0.15.2",
     "semver": "^7.3.5"
   },
@@ -71,5 +72,5 @@
       "artifactName": "${productName}_${version}_${os}_portable.${ext}"
     }
   },
-  "selfUpdate": false
+  "selfUpdate": true
 }
