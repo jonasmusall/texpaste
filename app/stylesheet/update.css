@@ -1,0 +1,31 @@
+@import url("common.css");
+
+html {
+    height: 100%;
+}
+
+body {
+    margin: 0px;
+    box-sizing: border-box;
+    height: 100%;
+    padding: 8px;
+    font: 14px sans-serif;
+    cursor: default;
+    user-select: none;
+}
+
+#progress-percent {
+    width: 38px;
+    flex-grow: 0;
+}
+
+#progress-bar {
+    margin-left: 12px;
+    flex-grow: 1;
+}
+
+#progress-texta {
+    width: 210px;
+    flex-grow: 0;
+    text-align: end;
+}

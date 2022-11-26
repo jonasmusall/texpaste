@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self'">
+        <link rel="stylesheet" href="stylesheet/update.css">
+        <link rel="stylesheet" href="stylesheet/flexbox.css">
+        <link rel="stylesheet" href="stylesheet/buttons.css">
+        <title>Updating texpaste</title>
+    </head>
+    <body class="flex">
+        <div class="flex row">
+            <span id="progress-percent">0%</span><progress id="progress-bar" max="100" value="0"></progress>
+        </div>
+        <div class="flex row justify-end">
+            <span id="progress-text"></span>
+        </div>
+        <div class="flex row justify-end align-end">
+            <button id="cancel" tabindex="12">Cancel</button>
+        </div>
+    </body>
+</html>

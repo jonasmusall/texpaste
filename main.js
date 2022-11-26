@@ -9,9 +9,10 @@ const semverDf = new Deferred();
 
 
 /* ---- VARS ---- */
-let winIn, winOut;
+let winIn, winOut, winUpdate;
 const winInDf = new Deferred();
 const winOutDf = new Deferred();
+const winUpdateDf = new Deferred();
 const storeDf = new Deferred();
 let selfUpdate = false;
 let imgOut = null;
@@ -114,6 +115,21 @@ function createSettingsWindow() {
     }
 }
 
+function createUpdateWindow() {
+    winUpdate = new BrowserWindow({
+        width: 500,
+        height: 113,
+        resizable: false,
+        show: false,
+        webPreferences: {
+            preload: path.join(__dirname, 'app/preload/update.js')
+        }
+    });
+    winUpdate.menuBarVisible = false;
+    winUpdate.loadFile('app/update.html');
+    winUpdate.once('ready-to-show', () => winUpdate.show());
+}
+
 async function winInUpdateSettings() {
     (await winInDf.promise).webContents.send('settings', (await storeDf.promise).store);
 }
@@ -174,6 +190,7 @@ async function handleUpdateAvailable(info) {
 
 async function handleUpdateDownloadProgress(info) {
     console.log(`download-progress:\n ${info.transferred}/${info.total}B ${info.percent}% at ${info.bytesPerSecond}B/s`);
+    (await winUpdateDf.promise).webContents.send('update-progress', info.transferred, info.total, info.bytesPerSecond);
 }
 
 async function installUpdateOnQuit() {
