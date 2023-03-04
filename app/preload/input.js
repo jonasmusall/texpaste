@@ -68,10 +68,6 @@ function updateTex() {
     );
 }
 
-/**
- * 
- * @param {KeyboardEvent} event 
- */
 function handleInputKeyUp(event) {
     if (!event.ctrlKey && !event.shiftKey && !event.altKey) {
         if (event.key == 'Enter') {
