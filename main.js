@@ -169,7 +169,10 @@ async function initUpdater() {
     updater.removeListener('download-progress', handleUpdateDownloadProgress);
     updater.addListener('update-available', handleUpdateAvailable);
     updater.addListener('download-progress', handleUpdateDownloadProgress);
-    updater.addListener('update-downloaded', () => updateCancellationToken = null);
+    updater.addListener('update-downloaded', async () => {
+        updateCancellationToken = null;
+        (await winUpdateDf.promise).close();
+    });
 }
 
 async function checkForUpdates() {
