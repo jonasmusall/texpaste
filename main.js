@@ -15,6 +15,7 @@ const winOutDf = new Deferred();
 const winUpdateDf = new Deferred();
 const storeDf = new Deferred();
 let selfUpdate = false;
+let updateCancellationToken = null;
 let imgOut = null;
 let isSettingsWindowOpen = false;
 
@@ -44,6 +45,8 @@ ipcMain.on('output:size', (event, args) => winOut.setSize(args.width + 60, args.
 ipcMain.handle('settings:read', async () => { return { settings: ((await storeDf.promise).store), selfUpdate: selfUpdate }});
 ipcMain.on('settings:write', (event, args) => updateSettings(args));
 
+ipcMain.on('update:ready', () => winUpdateDf.resolve(winUpdate));
+
 
 /* ---- APP STARTUP ---- */
 app.whenReady().then(() => {
@@ -71,7 +74,7 @@ function createInputWindow() {
     });
     winIn.loadFile('app/input.html');
     winIn.once('ready-to-show', () => { winIn.show(); console.timeEnd('show'); });
-    winIn.on('close', async () => (await winOutDf.promise).close());
+    winIn.on('close', quit);
 }
 
 function createOutputWindow() {
@@ -145,7 +148,7 @@ async function acceptInput() {
         clipboard.writeImage(imgOut);
     }
     if ((await storeDf.promise).get('behaviorCloseOnAccept')) {
-        (await winInDf.promise).close();
+        quit();
     }
 }
 
@@ -181,6 +184,7 @@ async function handleUpdateAvailable(info) {
     const store = await storeDf.promise;
     if ((await semverDf.promise).gt(info.version, store.get('updateSkipVersion'))) {
         if (selfUpdate && store.get('updateAutoinstall')) {
+            updateCancellationToken = new (require('builder-util-runtime')).CancellationToken();
             (await updaterDf.promise).downloadUpdate();
         } else {
             (await winInDf.promise).webContents.send('update-notify', { nextVersion: info.version, selfUpdate: selfUpdate });
@@ -190,13 +194,21 @@ async function handleUpdateAvailable(info) {
 
 async function handleUpdateDownloadProgress(info) {
     console.log(`download-progress:\n ${info.transferred}/${info.total}B ${info.percent}% at ${info.bytesPerSecond}B/s`);
-    (await winUpdateDf.promise).webContents.send('update-progress', info.transferred, info.total, info.bytesPerSecond);
+    (await winUpdateDf.promise).webContents.send('update-progress', info);
 }
 
 async function installUpdateOnQuit() {
     const updater = await updaterDf.promise;
+    updateCancellationToken = new (require('builder-util-runtime')).CancellationToken();
     updater.downloadUpdate();
     updater.autoInstallOnAppQuit = true;
+}
+
+async function quit() {
+    (await winOutDf.promise).close();
+    if (updateCancellationToken != null) {
+        createUpdateWindow();
+    }
 }
 
 function initStore() {

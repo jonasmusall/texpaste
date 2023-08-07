@@ -10,6 +10,8 @@ window.addEventListener('DOMContentLoaded', () => {
     progressPercent = document.getElementById('progress-percent');
     progressBar = document.getElementById('progress-bar');
     progressText = document.getElementById('progress-text');
+
+    ipcRenderer.send('update:ready');
 })
 
 function updateProgress(transferred, total, bytesPerSecond) {
