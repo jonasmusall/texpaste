@@ -169,6 +169,7 @@ async function initUpdater() {
     updater.removeListener('download-progress', handleUpdateDownloadProgress);
     updater.addListener('update-available', handleUpdateAvailable);
     updater.addListener('download-progress', handleUpdateDownloadProgress);
+    updater.addListener('update-downloaded', () => updateCancellationToken = null);
 }
 
 async function checkForUpdates() {
