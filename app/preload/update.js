@@ -10,12 +10,12 @@ window.addEventListener('DOMContentLoaded', () => {
     progressBar = document.getElementById('progress-bar');
     progressText = document.getElementById('progress-text');
 
-    document.getElementById('cancel').addEventListener('click', () => window.close())
+    document.getElementById('cancel').addEventListener('click', () => window.close());
 
     ipcRenderer.send('update:ready');
-})
+});
 
 function updateProgress(transferred, total, bytesPerSecond) {
     progressBar.value = transferred / total;
-    progressText.innerText = `${humanFormat(transferred, formatOptions)}/${humanFormat(total, formatOptions)} at ${humanFormat(bytesPerSecond, formatOptions)}/s`
+    progressText.innerText = `${humanFormat(transferred, formatOptions)}/${humanFormat(total, formatOptions)} at ${humanFormat(bytesPerSecond, formatOptions)}/s`;
 }
