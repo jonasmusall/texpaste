@@ -10,6 +10,8 @@ window.addEventListener('DOMContentLoaded', () => {
     progressBar = document.getElementById('progress-bar');
     progressText = document.getElementById('progress-text');
 
+    document.getElementById('cancel').addEventListener('click', () => window.close())
+
     ipcRenderer.send('update:ready');
 })
 
