@@ -131,6 +131,12 @@ function createUpdateWindow() {
     winUpdate.menuBarVisible = false;
     winUpdate.loadFile('app/update.html');
     winUpdate.once('ready-to-show', () => winUpdate.show());
+    winUpdate.on('close', () => {
+        if (updateCancellationToken != null) {
+            updateCancellationToken.cancel();
+            console.log('Update cancelled');
+        }
+    });
 }
 
 async function winInUpdateSettings() {
@@ -189,7 +195,7 @@ async function handleUpdateAvailable(info) {
     if ((await semverDf.promise).gt(info.version, store.get('updateSkipVersion'))) {
         if (selfUpdate && store.get('updateAutoinstall')) {
             updateCancellationToken = new (require('builder-util-runtime')).CancellationToken();
-            (await updaterDf.promise).downloadUpdate();
+            (await updaterDf.promise).downloadUpdate(updateCancellationToken);
         } else {
             (await winInDf.promise).webContents.send('update-notify', { nextVersion: info.version, selfUpdate: selfUpdate });
         }
@@ -204,7 +210,7 @@ async function handleUpdateDownloadProgress(info) {
 async function installUpdateOnQuit() {
     const updater = await updaterDf.promise;
     updateCancellationToken = new (require('builder-util-runtime')).CancellationToken();
-    updater.downloadUpdate();
+    updater.downloadUpdate(updateCancellationToken);
     updater.autoInstallOnAppQuit = true;
 }
 
