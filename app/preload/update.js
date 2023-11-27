@@ -1,7 +1,10 @@
 const { ipcRenderer } = require('electron');
 const humanFormat = require('human-format');
 
-const formatOptions = { unit: 'B' };
+const formatOptions = {
+    unit: 'B',
+    separator: '\u2009'
+};
 let progressBar, progressText;
 
 ipcRenderer.on('update-progress', (event, args) => updateProgress(args.transferred, args.total, args.bytesPerSecond));
@@ -17,5 +20,5 @@ window.addEventListener('DOMContentLoaded', () => {
 
 function updateProgress(transferred, total, bytesPerSecond) {
     progressBar.value = transferred / total;
-    progressText.innerText = `${humanFormat(transferred, formatOptions)}/${humanFormat(total, formatOptions)} at ${humanFormat(bytesPerSecond, formatOptions)}/s`;
+    progressText.innerText = `${humanFormat(transferred, formatOptions)} / ${humanFormat(total, formatOptions)} at ${humanFormat(bytesPerSecond, formatOptions)}/s`;
 }
