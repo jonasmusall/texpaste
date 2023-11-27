@@ -20,6 +20,10 @@ body {
     margin: 0px 16px;
 }
 
+#progress-text {
+    margin-left: 4px;
+}
+
 .row {
     display: flex;
     flex-direction: row;
