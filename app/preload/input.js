@@ -69,10 +69,12 @@ function updateTex() {
 }
 
 function handleInputKeyUp(event) {
-    if (event.key == 'Enter') {
-        accept();
-    } else if (event.key == 'Escape') {
-        cancel();
+    if (!event.ctrlKey && !event.shiftKey && !event.altKey) {
+        if (event.key == 'Enter') {
+            accept();
+        } else if (event.key == 'Escape') {
+            cancel();
+        }
     }
 }
 
