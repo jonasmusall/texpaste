@@ -9,11 +9,13 @@ const semverDf = new Deferred();
 
 
 /* ---- VARS ---- */
-let winIn, winOut;
+let winIn, winOut, winUpdate;
 const winInDf = new Deferred();
 const winOutDf = new Deferred();
+const winUpdateDf = new Deferred();
 const storeDf = new Deferred();
 let selfUpdate = false;
+let updateCancellationToken = null;
 let imgOut = null;
 let isSettingsWindowOpen = false;
 
@@ -43,6 +45,8 @@ ipcMain.on('output:size', (event, args) => winOut.setSize(args.width + 60, args.
 ipcMain.handle('settings:read', async () => { return { settings: ((await storeDf.promise).store), selfUpdate: selfUpdate }});
 ipcMain.on('settings:write', (event, args) => updateSettings(args));
 
+ipcMain.on('update:ready', () => winUpdateDf.resolve(winUpdate));
+
 
 /* ---- APP STARTUP ---- */
 app.whenReady().then(() => {
@@ -70,7 +74,7 @@ function createInputWindow() {
     });
     winIn.loadFile('app/input.html');
     winIn.once('ready-to-show', () => { winIn.show(); console.timeEnd('show'); });
-    winIn.on('close', async () => (await winOutDf.promise).close());
+    winIn.on('close', quit);
 }
 
 function createOutputWindow() {
@@ -114,6 +118,27 @@ function createSettingsWindow() {
     }
 }
 
+function createUpdateWindow() {
+    winUpdate = new BrowserWindow({
+        width: 500,
+        height: 113,
+        resizable: false,
+        show: false,
+        webPreferences: {
+            preload: path.join(__dirname, 'app/preload/update.js')
+        }
+    });
+    winUpdate.menuBarVisible = false;
+    winUpdate.loadFile('app/update.html');
+    winUpdate.once('ready-to-show', () => winUpdate.show());
+    winUpdate.on('close', () => {
+        if (updateCancellationToken != null) {
+            updateCancellationToken.cancel();
+            console.log('Update cancelled');
+        }
+    });
+}
+
 async function winInUpdateSettings() {
     (await winInDf.promise).webContents.send('settings', (await storeDf.promise).store);
 }
@@ -129,7 +154,7 @@ async function acceptInput() {
         clipboard.writeImage(imgOut);
     }
     if ((await storeDf.promise).get('behaviorCloseOnAccept')) {
-        (await winInDf.promise).close();
+        quit();
     }
 }
 
@@ -147,7 +172,13 @@ async function initUpdater() {
     updater.autoDownload = false;
     updater.autoInstallOnAppQuit = (await storeDf.promise).get('updateAutoinstall');
     updater.removeListener('update-available', handleUpdateAvailable);
+    updater.removeListener('download-progress', handleUpdateDownloadProgress);
     updater.addListener('update-available', handleUpdateAvailable);
+    updater.addListener('download-progress', handleUpdateDownloadProgress);
+    updater.addListener('update-downloaded', async () => {
+        updateCancellationToken = null;
+        (await winUpdateDf.promise).close();
+    });
 }
 
 async function checkForUpdates() {
@@ -163,17 +194,31 @@ async function handleUpdateAvailable(info) {
     const store = await storeDf.promise;
     if ((await semverDf.promise).gt(info.version, store.get('updateSkipVersion'))) {
         if (selfUpdate && store.get('updateAutoinstall')) {
-            (await updaterDf.promise).downloadUpdate();
+            updateCancellationToken = new (require('builder-util-runtime')).CancellationToken();
+            (await updaterDf.promise).downloadUpdate(updateCancellationToken);
         } else {
             (await winInDf.promise).webContents.send('update-notify', { nextVersion: info.version, selfUpdate: selfUpdate });
         }
     }
 }
 
+async function handleUpdateDownloadProgress(info) {
+    console.log(`download-progress:\n ${info.transferred}/${info.total}B ${info.percent}% at ${info.bytesPerSecond}B/s`);
+    (await winUpdateDf.promise).webContents.send('update-progress', info);
+}
+
 async function installUpdateOnQuit() {
     const updater = await updaterDf.promise;
-    updater.downloadUpdate();
+    updateCancellationToken = new (require('builder-util-runtime')).CancellationToken();
+    updater.downloadUpdate(updateCancellationToken);
     updater.autoInstallOnAppQuit = true;
+}
+
+async function quit() {
+    (await winOutDf.promise).close();
+    if (updateCancellationToken != null) {
+        createUpdateWindow();
+    }
 }
 
 function initStore() {
