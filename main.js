@@ -54,10 +54,7 @@ app.whenReady().then(() => {
         selfUpdate = true;
     }
     createInputWindow();
-    createOutputWindow();
 });
-// call afterFrontEndReady after input window is definitely done
-winInDf.promise.then(() => setTimeout(afterFrontEndReady, 100));
 
 
 /* ---- WINDOW FUNCTIONS ---- */
@@ -73,7 +70,11 @@ function createInputWindow() {
         }
     });
     winIn.loadFile('app/input.html');
-    winIn.once('ready-to-show', () => { winIn.show(); console.timeEnd('show'); });
+    winIn.once('ready-to-show', () => {
+        winIn.show();
+        console.timeEnd('show');
+        afterFrontEndReady();
+    });
     winIn.on('close', quit);
 }
 
@@ -159,7 +160,8 @@ async function acceptInput() {
 }
 
 function afterFrontEndReady() {
-    console.log('Initializing updater and store');
+    console.log('Initializing output window, updater and store');
+    createOutputWindow();
     updaterDf.resolve(require('electron-updater').autoUpdater);
     semverDf.resolve(require('semver'));
     initUpdater();
