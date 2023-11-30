@@ -58,7 +58,7 @@
         "deb",
         "tar.gz"
       ],
-      "icon": "build/512x512.png",
+      "icon": "build/icons",
       "maintainer": "Jonas Musall",
       "category": "Utility"
     },
