@@ -40,7 +40,7 @@ jobs:
         run: npm run build-selfupdate-true
       - name: Build non-self-updatable targets
         run: npm run build-selfupdate-false
-      - name: Pack SVG icon into DEB archives
+      - name: Pack SVG icon into deb archives
         run: bash .github/scripts/deb_pack_scalable_icon.sh
       - name: List created files
         run: ls -la dist
